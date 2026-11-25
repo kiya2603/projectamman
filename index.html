@@ -11,557 +11,538 @@
 
 <style>
 :root {
-  --navy: #12294a;
-  --blue: #245b91;
-  --light-blue: #eaf2fa;
-  --bg: #f4f7fb;
-  --white: #ffffff;
-  --text: #26364a;
-  --muted: #718096;
-  --border: #dce5ef;
-  --green: #16845b;
-  --red: #c03939;
-  --orange: #b7791f;
+  --navy:#12294a;
+  --blue:#245b91;
+  --bg:#f4f7fb;
+  --white:#fff;
+  --text:#26364a;
+  --muted:#718096;
+  --border:#dce5ef;
+  --green:#16845b;
+  --red:#c03939;
 }
 
 * {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
 }
 
 body {
-  font-family: Arial, Helvetica, sans-serif;
-  background: var(--bg);
-  color: var(--text);
+  font-family:Arial,Helvetica,sans-serif;
+  background:var(--bg);
+  color:var(--text);
 }
 
 .app {
-  display: flex;
-  min-height: 100vh;
+  display:flex;
+  min-height:100vh;
 }
 
 /* SIDEBAR */
 
 .sidebar {
-  width: 245px;
-  flex-shrink: 0;
-  background: var(--navy);
-  color: white;
-  padding: 25px 17px;
+  width:245px;
+  flex-shrink:0;
+  background:var(--navy);
+  color:white;
+  padding:25px 17px;
 }
 
 .brand {
-  padding: 5px 10px 27px;
-  border-bottom: 1px solid #34506e;
+  padding:5px 10px 27px;
+  border-bottom:1px solid #34506e;
 }
 
 .brand h2 {
-  font-size: 19px;
-  margin-bottom: 7px;
+  font-size:19px;
+  margin-bottom:7px;
 }
 
 .brand p {
-  font-size: 11px;
-  color: #b9cce0;
+  font-size:11px;
+  color:#b9cce0;
 }
 
 .menu-title {
-  font-size: 10px;
-  color: #9bb1c9;
-  margin: 25px 10px 12px;
-  letter-spacing: 1.2px;
+  font-size:10px;
+  color:#9bb1c9;
+  margin:25px 10px 12px;
+  letter-spacing:1.2px;
 }
 
 .nav-btn {
-  display: block;
-  width: 100%;
-  padding: 13px 12px;
-  margin-bottom: 5px;
-  text-align: left;
-  background: transparent;
-  color: #dce7f3;
-  border: none;
-  border-radius: 7px;
-  cursor: pointer;
-  font-size: 13px;
+  display:block;
+  width:100%;
+  padding:13px 12px;
+  margin-bottom:5px;
+  text-align:left;
+  background:transparent;
+  color:#dce7f3;
+  border:none;
+  border-radius:7px;
+  cursor:pointer;
+  font-size:13px;
 }
 
 .nav-btn:hover,
 .nav-btn.active {
-  background: var(--blue);
-  color: white;
+  background:var(--blue);
+  color:white;
 }
 
 /* MAIN */
 
 .main {
-  flex: 1;
-  min-width: 0;
+  flex:1;
+  min-width:0;
 }
 
 .topbar {
-  min-height: 72px;
-  background: white;
-  border-bottom: 1px solid var(--border);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 15px 30px;
+  min-height:72px;
+  background:white;
+  border-bottom:1px solid var(--border);
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:15px 30px;
 }
 
 .topbar h3 {
-  color: var(--navy);
-  font-size: 17px;
+  color:var(--navy);
+  font-size:17px;
 }
 
 .topbar span {
-  color: var(--muted);
-  font-size: 12px;
+  color:var(--muted);
+  font-size:12px;
 }
 
 .content {
-  max-width: 1450px;
-  margin: auto;
-  padding: 28px;
+  max-width:1450px;
+  margin:auto;
+  padding:28px;
 }
 
 .page {
-  display: none;
+  display:none;
 }
 
 .page.active {
-  display: block;
+  display:block;
 }
 
 .page-heading {
-  margin-bottom: 23px;
+  margin-bottom:23px;
 }
 
 .page-heading h1 {
-  color: var(--navy);
-  font-size: 24px;
-  margin-bottom: 8px;
+  color:var(--navy);
+  font-size:24px;
+  margin-bottom:8px;
 }
 
 .page-heading p {
-  color: var(--muted);
-  font-size: 13px;
-  line-height: 1.6;
+  color:var(--muted);
+  font-size:13px;
+  line-height:1.6;
 }
 
 /* CARDS */
 
 .stats {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 17px;
-  margin-bottom: 24px;
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:17px;
+  margin-bottom:24px;
 }
 
 .stat-card {
-  background: white;
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 21px;
+  background:white;
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:21px;
 }
 
 .stat-card p {
-  color: var(--muted);
-  font-size: 12px;
-  margin-bottom: 12px;
+  color:var(--muted);
+  font-size:12px;
+  margin-bottom:12px;
 }
 
 .stat-card h2 {
-  color: var(--navy);
-  font-size: 28px;
+  color:var(--navy);
+  font-size:28px;
 }
 
 .panel {
-  background: white;
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 23px;
-  margin-bottom: 20px;
+  background:white;
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:23px;
+  margin-bottom:20px;
 }
 
 .panel-title {
-  color: var(--navy);
-  font-size: 16px;
-  font-weight: bold;
-  margin-bottom: 20px;
+  color:var(--navy);
+  font-size:16px;
+  font-weight:bold;
+  margin-bottom:20px;
 }
 
 /* FORM */
 
 .form-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 17px;
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:17px;
 }
 
 .field {
-  margin-bottom: 17px;
+  margin-bottom:17px;
 }
 
 .field label {
-  display: block;
-  color: #43546a;
-  font-size: 12px;
-  font-weight: bold;
-  margin-bottom: 8px;
+  display:block;
+  color:#43546a;
+  font-size:12px;
+  font-weight:bold;
+  margin-bottom:8px;
 }
 
-input, select {
-  width: 100%;
-  padding: 12px;
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  outline: none;
-  background: white;
-  color: var(--text);
-  font-size: 13px;
+input {
+  width:100%;
+  padding:12px;
+  border:1px solid var(--border);
+  border-radius:6px;
+  outline:none;
+  background:white;
+  color:var(--text);
+  font-size:13px;
 }
 
-input:focus, select:focus {
-  border-color: var(--blue);
-  box-shadow: 0 0 0 2px rgba(36,91,145,.08);
+input:focus {
+  border-color:var(--blue);
+  box-shadow:0 0 0 2px rgba(36,91,145,.08);
 }
 
 input[readonly] {
-  background: #f1f4f8;
-  color: #526477;
+  background:#f1f4f8;
+  color:#526477;
 }
 
 .hint {
-  color: var(--muted);
-  font-size: 11px;
-  line-height: 1.5;
-  margin-top: 6px;
+  color:var(--muted);
+  font-size:11px;
+  line-height:1.5;
+  margin-top:6px;
 }
 
 /* BUTTONS */
 
 .btn {
-  padding: 12px 18px;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 12px;
-  font-weight: bold;
-  transition: .2s;
+  padding:12px 18px;
+  border:none;
+  border-radius:6px;
+  cursor:pointer;
+  font-size:12px;
+  font-weight:bold;
+  transition:.2s;
 }
 
 .btn-primary {
-  background: var(--blue);
-  color: white;
+  background:var(--blue);
+  color:white;
 }
 
 .btn-primary:hover {
-  background: var(--navy);
+  background:var(--navy);
 }
 
 .btn-secondary {
-  background: #eaf0f7;
-  color: var(--blue);
+  background:#eaf0f7;
+  color:var(--blue);
 }
 
 .btn-danger {
-  background: #fff0f0;
-  color: var(--red);
-}
-
-.btn-success {
-  background: #e8f7ef;
-  color: var(--green);
+  background:#fff0f0;
+  color:var(--red);
 }
 
 .button-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 9px;
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  margin-top:9px;
 }
 
-.btn:disabled {
-  opacity: .5;
-  cursor: not-allowed;
-}
-
-/* BARCODE LABEL GENERATOR */
+/* BARCODE LABELS */
 
 .label-toolbar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 12px;
-  margin-bottom: 20px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  flex-wrap:wrap;
+  gap:12px;
+  margin-bottom:20px;
 }
 
 .label-toolbar h2 {
-  color: var(--navy);
-  font-size: 18px;
+  color:var(--navy);
+  font-size:18px;
 }
 
 .label-count {
-  color: var(--muted);
-  font-size: 12px;
+  color:var(--muted);
+  font-size:12px;
+  margin-top:6px;
 }
 
 .labels-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 20px;
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:20px;
 }
 
 .barcode-label {
-  background: white;
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  min-width: 0;
-  padding: 23px 17px;
-  text-align: center;
-  position: relative;
-  break-inside: avoid;
+  background:white;
+  border:1px solid var(--border);
+  border-radius:12px;
+  min-width:0;
+  padding:23px 17px;
+  text-align:center;
+  break-inside:avoid;
 }
 
 .barcode-label h3 {
-  color: var(--navy);
-  font-size: 18px;
-  margin-bottom: 8px;
-  overflow-wrap: anywhere;
+  color:var(--navy);
+  font-size:18px;
+  margin-bottom:8px;
+  overflow-wrap:anywhere;
 }
 
 .barcode-label .location {
-  color: #75849a;
-  font-size: 13px;
-  margin-bottom: 17px;
+  color:#75849a;
+  font-size:13px;
+  margin-bottom:17px;
 }
 
 .barcode-label svg {
-  display: block;
-  width: 100%;
-  height: 78px;
-  margin: 0 auto;
+  display:block;
+  width:100%;
+  height:90px;
+  margin:0 auto;
 }
 
 .barcode-label .material-code {
-  color: #26364a;
-  font-size: 15px;
-  font-weight: bold;
-  letter-spacing: 1px;
-  margin-top: 10px;
-  overflow-wrap: anywhere;
+  color:#26364a;
+  font-size:15px;
+  font-weight:bold;
+  letter-spacing:1px;
+  margin-top:10px;
+  overflow-wrap:anywhere;
 }
 
 .label-actions {
-  display: flex;
-  justify-content: center;
-  margin-top: 14px;
+  display:flex;
+  justify-content:center;
+  margin-top:14px;
 }
 
 .label-actions button {
-  font-size: 10px;
-  padding: 8px 12px;
+  font-size:10px;
+  padding:8px 12px;
 }
 
 .empty-labels {
-  text-align: center;
-  padding: 45px 15px;
-  color: var(--muted);
-  background: #fafcff;
-  border: 1px dashed #cbd7e5;
-  border-radius: 9px;
-  font-size: 13px;
-}
-
-.label-empty-icon {
-  font-size: 30px;
-  margin-bottom: 10px;
+  text-align:center;
+  padding:45px 15px;
+  color:var(--muted);
+  background:#fafcff;
+  border:1px dashed #cbd7e5;
+  border-radius:9px;
+  font-size:13px;
 }
 
 /* TABLE */
 
 .table-wrapper {
-  width: 100%;
-  overflow-x: auto;
+  width:100%;
+  overflow-x:auto;
 }
 
 table {
-  width: 100%;
-  min-width: 750px;
-  border-collapse: collapse;
+  width:100%;
+  min-width:750px;
+  border-collapse:collapse;
 }
 
 th {
-  background: #f1f5fa;
-  color: #4a5c72;
-  text-align: left;
-  font-size: 11px;
-  padding: 13px;
-  white-space: nowrap;
+  background:#f1f5fa;
+  color:#4a5c72;
+  text-align:left;
+  font-size:11px;
+  padding:13px;
+  white-space:nowrap;
 }
 
 td {
-  border-bottom: 1px solid var(--border);
-  padding: 13px;
-  font-size: 12px;
-  white-space: nowrap;
+  border-bottom:1px solid var(--border);
+  padding:13px;
+  font-size:12px;
+  white-space:nowrap;
 }
 
 tbody tr:hover {
-  background: #f8fafd;
+  background:#f8fafd;
 }
 
 .status {
-  display: inline-block;
-  border-radius: 20px;
-  padding: 5px 10px;
-  font-size: 10px;
-  font-weight: bold;
+  display:inline-block;
+  border-radius:20px;
+  padding:5px 10px;
+  font-size:10px;
+  font-weight:bold;
 }
 
 .status-issued {
-  background: #e6f6ed;
-  color: var(--green);
+  background:#e6f6ed;
+  color:var(--green);
 }
 
 .toolbar {
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 12px;
-  margin-bottom: 17px;
+  display:flex;
+  justify-content:space-between;
+  flex-wrap:wrap;
+  gap:12px;
+  margin-bottom:17px;
 }
 
 .toolbar input {
-  max-width: 380px;
+  max-width:380px;
 }
 
-/* NOTICE */
+/* NOTIFICATIONS */
 
 .notice {
-  padding: 14px;
-  border-radius: 7px;
-  font-size: 12px;
-  line-height: 1.7;
-  margin-bottom: 16px;
+  padding:14px;
+  border-radius:7px;
+  font-size:12px;
+  line-height:1.7;
+  margin-bottom:16px;
 }
 
 .notice-info {
-  background: #edf5ff;
-  color: #275785;
-}
-
-.notice-warning {
-  background: #fff6e6;
-  color: #986415;
+  background:#edf5ff;
+  color:#275785;
 }
 
 .notice-danger {
-  background: #fff0f0;
-  color: var(--red);
+  background:#fff0f0;
+  color:var(--red);
 }
 
 .hidden {
-  display: none !important;
+  display:none!important;
 }
 
 /* SCANNER */
 
 .scan-row {
-  display: flex;
-  align-items: center;
-  gap: 10px;
+  display:flex;
+  align-items:center;
+  gap:10px;
 }
 
 .scan-row input {
-  flex: 1;
+  flex:1;
 }
 
 .scanner-box {
-  text-align: center;
-  background: #f8fafd;
-  border: 1px solid var(--border);
-  padding: 20px;
-  border-radius: 8px;
-  margin-top: 15px;
+  text-align:center;
+  background:#f8fafd;
+  border:1px solid var(--border);
+  padding:20px;
+  border-radius:8px;
+  margin-top:15px;
 }
 
 #reader {
-  width: 100%;
-  max-width: 450px;
-  margin: 15px auto;
-  overflow: hidden;
-  border-radius: 8px;
+  width:100%;
+  max-width:500px;
+  margin:15px auto;
+  overflow:hidden;
+  border-radius:8px;
+}
+
+.scan-result {
+  background:#edf8f2;
+  border:1px solid #ccebd8;
+  color:#176b48;
+  padding:12px;
+  border-radius:7px;
+  font-size:12px;
+  margin-bottom:16px;
 }
 
 /* PRINT */
 
 @page {
-  size: A4 portrait;
-  margin: 12mm;
+  size:A4 portrait;
+  margin:12mm;
 }
 
 @media print {
 
-  body.printing-labels {
-    background: white;
-  }
-
   body.printing-labels * {
-    visibility: hidden !important;
+    visibility:hidden!important;
   }
 
   body.printing-labels #printLabelsArea,
   body.printing-labels #printLabelsArea * {
-    visibility: visible !important;
+    visibility:visible!important;
   }
 
   body.printing-labels #printLabelsArea {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    padding: 0;
-    margin: 0;
-    background: white;
+    position:absolute;
+    top:0;
+    left:0;
+    width:100%;
+    background:white;
   }
 
   body.printing-labels .labels-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 12mm;
+    grid-template-columns:repeat(2,1fr);
+    gap:12mm;
   }
 
   body.printing-labels .barcode-label {
-    border: 1px solid #cbd5e1;
-    border-radius: 5px;
-    padding: 15px 10px;
-    min-height: 145px;
-    break-inside: avoid;
+    border:1px solid #cbd5e1;
+    border-radius:5px;
+    padding:15px 10px;
+    min-height:150px;
+    break-inside:avoid;
   }
 
   body.printing-labels .barcode-label h3 {
-    font-size: 15px;
+    font-size:15px;
   }
 
   body.printing-labels .barcode-label .location {
-    font-size: 11px;
+    font-size:11px;
   }
 
   body.printing-labels .barcode-label svg {
-    height: 65px;
+    height:75px;
   }
 
   body.printing-labels .label-actions,
   body.printing-labels .no-print {
-    display: none !important;
+    display:none!important;
   }
 
   body.printing-labels .label-count {
-    display: none;
+    display:none;
   }
 }
 
@@ -569,49 +550,49 @@ tbody tr:hover {
 
 @media(max-width:1000px) {
   .labels-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns:repeat(2,minmax(0,1fr));
   }
 }
 
 @media(max-width:850px) {
 
   .app {
-    display: block;
+    display:block;
   }
 
   .sidebar {
-    width: 100%;
-    padding: 12px;
+    width:100%;
+    padding:12px;
   }
 
   .brand {
-    padding: 8px;
+    padding:8px;
   }
 
   .menu-title {
-    display: none;
+    display:none;
   }
 
   .nav-list {
-    display: flex;
-    gap: 5px;
-    overflow-x: auto;
-    margin-top: 10px;
+    display:flex;
+    gap:5px;
+    overflow-x:auto;
+    margin-top:10px;
   }
 
   .nav-btn {
-    width: auto;
-    white-space: nowrap;
-    padding: 11px;
-    font-size: 11px;
+    width:auto;
+    white-space:nowrap;
+    padding:11px;
+    font-size:11px;
   }
 
   .content {
-    padding: 17px;
+    padding:17px;
   }
 
   .topbar {
-    padding: 15px 17px;
+    padding:15px 17px;
   }
 }
 
@@ -619,19 +600,15 @@ tbody tr:hover {
 
   .stats,
   .form-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns:1fr;
   }
 
   .labels-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns:1fr;
   }
 
   .panel {
-    padding: 16px;
-  }
-
-  .label-toolbar {
-    align-items: flex-start;
+    padding:16px;
   }
 }
 </style>
@@ -642,6 +619,7 @@ tbody tr:hover {
 <div class="app">
 
 <!-- SIDEBAR -->
+
 <aside class="sidebar">
 
   <div class="brand">
@@ -652,27 +630,34 @@ tbody tr:hover {
   <div class="menu-title">MAIN MENU</div>
 
   <div class="nav-list">
-    <button class="nav-btn active" onclick="showPage('dashboard',this)">
+
+    <button class="nav-btn active"
+      onclick="showPage('dashboard',this)">
       ▦ Dashboard
     </button>
 
-    <button class="nav-btn" onclick="showPage('barcode',this)">
+    <button class="nav-btn"
+      onclick="showPage('barcode',this)">
       ▤ Barcode Generator
     </button>
 
-    <button class="nav-btn" onclick="showPage('issuing',this)">
+    <button class="nav-btn"
+      onclick="showPage('issuing',this)">
       ⇧ New Issuing
     </button>
 
-    <button class="nav-btn" onclick="showPage('history',this)">
+    <button class="nav-btn"
+      onclick="showPage('history',this)">
       ◷ Issuing History
     </button>
+
   </div>
 
 </aside>
 
 
 <!-- MAIN -->
+
 <main class="main">
 
 <header class="topbar">
@@ -683,9 +668,7 @@ tbody tr:hover {
 <div class="content">
 
 
-<!-- ==================================
-     DASHBOARD
-================================== -->
+<!-- DASHBOARD -->
 
 <section id="dashboard" class="page active">
 
@@ -718,6 +701,7 @@ tbody tr:hover {
     <div class="panel-title">Recent Issuing Transactions</div>
 
     <div class="table-wrapper">
+
       <table>
 
         <thead>
@@ -735,21 +719,19 @@ tbody tr:hover {
         <tbody id="recentTable"></tbody>
 
       </table>
-    </div>
 
+    </div>
   </div>
 
   <div class="notice notice-info">
-    This system is an additional digital record for warehouse issuing activities.
+    This system provides additional digital issuing records.
     SAP remains the official source of reservation and material information.
   </div>
 
 </section>
 
 
-<!-- ==================================
-     BARCODE GENERATOR
-================================== -->
+<!-- BARCODE GENERATOR -->
 
 <section id="barcode" class="page">
 
@@ -766,34 +748,28 @@ tbody tr:hover {
 
       <div class="field">
         <label>Material Number *</label>
-        <input
-          id="barcodeMaterial"
-          placeholder="Enter Material Number"
-        >
+        <input id="barcodeMaterial"
+          placeholder="Enter Material Number">
       </div>
 
       <div class="field">
         <label>Material Description *</label>
-        <input
-          id="barcodeDescription"
-          placeholder="Enter Material Name"
-        >
+        <input id="barcodeDescription"
+          placeholder="Enter Material Name">
       </div>
 
       <div class="field">
         <label>Storage Location *</label>
-        <input
-          id="barcodeLocation"
-          placeholder="Example: WH-A01"
-        >
+        <input id="barcodeLocation"
+          placeholder="Example: WH-A01">
       </div>
 
     </div>
 
     <div class="notice notice-info">
-      Barcode contains the Material Number, Material Description,
-      and Storage Location so the information can be identified
-      when scanned.
+      The barcode stores ONLY the Material Number.
+      Material Description and Storage Location are displayed
+      on the printed label.
     </div>
 
     <div class="button-row">
@@ -810,8 +786,6 @@ tbody tr:hover {
 
   </div>
 
-
-  <!-- GENERATED LABELS -->
 
   <div class="panel">
 
@@ -840,9 +814,7 @@ tbody tr:hover {
 </section>
 
 
-<!-- ==================================
-     NEW ISSUING
-================================== -->
+<!-- NEW ISSUING -->
 
 <section id="issuing" class="page">
 
@@ -861,10 +833,8 @@ tbody tr:hover {
 
       <div class="scan-row">
 
-        <input
-          id="materialNumber"
-          placeholder="Scan barcode using scanner or enter Material Number"
-        >
+        <input id="materialNumber"
+          placeholder="Scan barcode or enter Material Number">
 
         <button class="btn btn-secondary" onclick="startScanner()">
           📷 Scan
@@ -873,7 +843,7 @@ tbody tr:hover {
       </div>
 
       <p class="hint">
-        Scan the generated barcode using a camera or USB barcode scanner.
+        Use the phone camera or a USB barcode scanner.
       </p>
 
     </div>
@@ -881,7 +851,7 @@ tbody tr:hover {
     <div id="readerContainer" class="scanner-box hidden">
 
       <p style="font-size:12px;font-weight:bold;">
-        Camera Barcode Scanner
+        CODE128 Camera Scanner
       </p>
 
       <div id="reader"></div>
@@ -892,24 +862,26 @@ tbody tr:hover {
 
     </div>
 
+    <div id="scanSuccess" class="scan-result hidden"></div>
+
     <div class="form-grid">
 
       <div class="field">
         <label>Material Number</label>
-        <input id="materialDisplay" readonly
-          placeholder="Automatically filled">
+        <input id="materialDisplay"
+          readonly placeholder="Automatically filled">
       </div>
 
       <div class="field">
         <label>Material Description</label>
-        <input id="descriptionDisplay" readonly
-          placeholder="Automatically filled">
+        <input id="descriptionDisplay"
+          readonly placeholder="Automatically filled">
       </div>
 
       <div class="field">
         <label>Storage Location</label>
-        <input id="locationDisplay" readonly
-          placeholder="Automatically filled">
+        <input id="locationDisplay"
+          readonly placeholder="Automatically filled">
       </div>
 
       <div class="field">
@@ -966,9 +938,7 @@ tbody tr:hover {
 </section>
 
 
-<!-- ==================================
-     ISSUING HISTORY
-================================== -->
+<!-- ISSUING HISTORY -->
 
 <section id="history" class="page">
 
@@ -981,11 +951,9 @@ tbody tr:hover {
 
     <div class="toolbar">
 
-      <input
-        id="searchHistory"
+      <input id="searchHistory"
         placeholder="Search Reservation or Material Number..."
-        oninput="renderHistory()"
-      >
+        oninput="renderHistory()">
 
       <button class="btn btn-secondary" onclick="exportCSV()">
         Export CSV
@@ -1033,21 +1001,19 @@ tbody tr:hover {
 // STORAGE
 // ==========================================
 
-const RECORD_KEY = "scm_issuing_records_v2";
-const LABEL_KEY = "scm_barcode_labels_v2";
+const RECORD_KEY = "scm_issuing_records_v3";
+const LABEL_KEY = "scm_barcode_labels_v3";
 
 function readStorage(key) {
-
   try {
     return JSON.parse(localStorage.getItem(key)) || [];
-  } catch (error) {
+  } catch(error) {
     return [];
   }
-
 }
 
-function writeStorage(key, data) {
-  localStorage.setItem(key, JSON.stringify(data));
+function writeStorage(key,data) {
+  localStorage.setItem(key,JSON.stringify(data));
 }
 
 function getRecords() {
@@ -1060,17 +1026,17 @@ function getLabels() {
 
 
 // ==========================================
-// SAFE TEXT
+// SAFE HTML
 // ==========================================
 
 function escapeHTML(value) {
 
   return String(value ?? "").replace(/[&<>"']/g, character => ({
-    "&": "&amp;",
-    "<": "&lt;",
-    ">": "&gt;",
-    '"': "&quot;",
-    "'": "&#039;"
+    "&":"&amp;",
+    "<":"&lt;",
+    ">":"&gt;",
+    '"':"&quot;",
+    "'":"&#039;"
   })[character]);
 
 }
@@ -1080,7 +1046,7 @@ function escapeHTML(value) {
 // NAVIGATION
 // ==========================================
 
-function showPage(pageId, button) {
+function showPage(pageId,button) {
 
   document.querySelectorAll(".page").forEach(page => {
     page.classList.remove("active");
@@ -1094,9 +1060,9 @@ function showPage(pageId, button) {
 
   button.classList.add("active");
 
-  if (pageId === "dashboard") updateDashboard();
-  if (pageId === "history") renderHistory();
-  if (pageId === "barcode") renderLabels();
+  if(pageId === "dashboard") updateDashboard();
+  if(pageId === "history") renderHistory();
+  if(pageId === "barcode") renderLabels();
 
 }
 
@@ -1115,7 +1081,7 @@ function updateClock() {
 
 }
 
-setInterval(updateClock, 1000);
+setInterval(updateClock,1000);
 updateClock();
 
 
@@ -1134,24 +1100,17 @@ function generateLabel() {
   const location = document.getElementById("barcodeLocation")
     .value.trim();
 
-  if (!material || !description || !location) {
-    alert("Please complete Material Number, Material Description, and Storage Location.");
+  if(!material || !description || !location) {
+    alert("Please complete all required fields.");
     return;
   }
 
-  if (material.includes("|") ||
-      description.includes("|") ||
-      location.includes("|")) {
-    alert("The character | cannot be used in these fields.");
-    return;
-  }
-
-  if (!/^[A-Za-z0-9._/-]+$/.test(material)) {
+  if(!/^[A-Za-z0-9._/-]+$/.test(material)) {
     alert("Material Number contains unsupported characters.");
     return;
   }
 
-  if (typeof JsBarcode === "undefined") {
+  if(typeof JsBarcode === "undefined") {
     alert("Barcode library could not be loaded. Check your internet connection.");
     return;
   }
@@ -1163,30 +1122,26 @@ function generateLabel() {
     label.location.toLowerCase() === location.toLowerCase()
   );
 
-  if (exists) {
-    alert("This Material Number and Storage Location already have a generated label.");
+  if(exists) {
+    alert("This Material Number and Storage Location already have a label.");
     return;
   }
 
   const label = {
 
-    id: (window.crypto && crypto.randomUUID)
+    id:(window.crypto && crypto.randomUUID)
       ? crypto.randomUUID()
       : String(Date.now()),
 
-    material: material,
-    description: description,
-    location: location,
-
-    // CODE128 payload:
-    // Material Number | Description | Location
-    payload: material + "|" + description + "|" + location
+    material:material,
+    description:description,
+    location:location
 
   };
 
   labels.unshift(label);
 
-  writeStorage(LABEL_KEY, labels);
+  writeStorage(LABEL_KEY,labels);
 
   renderLabels();
 
@@ -1207,7 +1162,7 @@ function clearBarcodeForm() {
 
 
 // ==========================================
-// RENDER BARCODE LABELS
+// RENDER LABELS
 // ==========================================
 
 function renderLabels() {
@@ -1223,14 +1178,14 @@ function renderLabels() {
 
   grid.innerHTML = "";
 
-  if (!labels.length) {
+  if(!labels.length) {
 
     grid.innerHTML = `
       <div class="empty-labels" style="grid-column:1/-1;">
-        <div class="label-empty-icon">▤</div>
+        <div style="font-size:30px;margin-bottom:10px;">▤</div>
         <strong>No barcode labels generated yet.</strong>
         <p style="margin-top:8px;">
-          Enter material information above to create your first barcode label.
+          Enter material information above to create your first label.
         </p>
       </div>
     `;
@@ -1259,38 +1214,37 @@ function renderLabels() {
       </div>
 
       <div class="label-actions no-print">
-
-        <button
-          class="btn btn-danger"
-          data-remove="${escapeHTML(label.id)}"
-        >
+        <button class="btn btn-danger"
+          data-remove="${escapeHTML(label.id)}">
           Remove Label
         </button>
-
       </div>
 
     `;
 
     grid.appendChild(card);
 
-    const svg = card.querySelector("svg");
+    // IMPORTANT:
+    // Barcode stores ONLY the Material Number.
+    // Old saved payloads are intentionally ignored.
 
     try {
 
-      JsBarcode(svg, label.payload, {
+      JsBarcode(card.querySelector("svg"),label.material,{
 
-        format: "CODE128",
-        lineColor: "#12294a",
-        width: 2,
-        height: 65,
-        displayValue: false,
-        margin: 5
+        format:"CODE128",
+        lineColor:"#12294a",
+        width:2.5,
+        height:75,
+        displayValue:false,
+        margin:10
 
       });
 
-    } catch (error) {
+    } catch(error) {
 
-      svg.outerHTML = '<p class="hint">Unable to generate barcode.</p>';
+      card.querySelector("svg").outerHTML =
+        '<p class="hint">Unable to generate barcode.</p>';
 
     }
 
@@ -1298,7 +1252,7 @@ function renderLabels() {
 
   grid.querySelectorAll("[data-remove]").forEach(button => {
 
-    button.addEventListener("click", () => {
+    button.addEventListener("click",() => {
       removeLabel(button.dataset.remove);
     });
 
@@ -1313,11 +1267,11 @@ function renderLabels() {
 
 function removeLabel(id) {
 
-  if (!confirm("Remove this barcode label?")) return;
+  if(!confirm("Remove this barcode label?")) return;
 
   const labels = getLabels().filter(label => label.id !== id);
 
-  writeStorage(LABEL_KEY, labels);
+  writeStorage(LABEL_KEY,labels);
 
   renderLabels();
 
@@ -1325,20 +1279,15 @@ function removeLabel(id) {
 
 
 // ==========================================
-// PRINT ALL BARCODE LABELS
+// PRINT LABELS
 // ==========================================
 
 function printAllLabels() {
 
   const labels = getLabels();
 
-  if (!labels.length) {
+  if(!labels.length) {
     alert("There are no barcode labels to print.");
-    return;
-  }
-
-  if (typeof JsBarcode === "undefined") {
-    alert("Barcode library is not available.");
     return;
   }
 
@@ -1348,65 +1297,45 @@ function printAllLabels() {
 
   setTimeout(() => {
     document.body.classList.remove("printing-labels");
-  }, 1000);
+  },1000);
 
 }
 
 
 // ==========================================
-// BARCODE SCANNER / MATERIAL DATA
+// MATERIAL LOOKUP
 // ==========================================
 
 function fillMaterial(rawCode) {
 
-  const code = String(rawCode || "").trim();
+  const material = String(rawCode || "").trim();
 
-  if (!code) return;
+  if(!material) return;
 
-  let material = code;
-  let description = "";
-  let location = "";
+  const matchingLabel = getLabels().find(label =>
+    label.material.toLowerCase() === material.toLowerCase()
+  );
 
-  // Read generated barcode information.
-  // Payload: Material|Description|Location
-
-  const parts = code.split("|");
-
-  if (parts.length === 3) {
-
-    material = parts[0];
-    description = parts[1];
-    location = parts[2];
-
-  } else {
-
-    // For a barcode containing only Material Number,
-    // find the matching label on this browser.
-
-    const matchingLabel = getLabels().find(label =>
-      label.material.toLowerCase() === material.toLowerCase()
-    );
-
-    if (matchingLabel) {
-
-      description = matchingLabel.description;
-      location = matchingLabel.location;
-
-    }
-
-  }
-
-  document.getElementById("materialNumber").value = code;
+  document.getElementById("materialNumber").value = material;
 
   document.getElementById("materialDisplay").value = material;
 
   document.getElementById("descriptionDisplay").value =
-    description;
+    matchingLabel ? matchingLabel.description : "";
 
   document.getElementById("locationDisplay").value =
-    location;
+    matchingLabel ? matchingLabel.location : "";
 
-  document.getElementById("duplicateAlert").classList.add("hidden");
+  document.getElementById("duplicateAlert")
+    .classList.add("hidden");
+
+  const result = document.getElementById("scanSuccess");
+
+  result.textContent = matchingLabel
+    ? "Barcode successfully scanned. Material information found."
+    : "Barcode read successfully. Material Number is not in the generated label list.";
+
+  result.classList.remove("hidden");
 
 }
 
@@ -1416,9 +1345,9 @@ function fillMaterial(rawCode) {
 // ==========================================
 
 document.getElementById("materialNumber")
-  .addEventListener("keydown", function(event) {
+  .addEventListener("keydown",function(event) {
 
-    if (event.key === "Enter") {
+    if(event.key === "Enter") {
 
       event.preventDefault();
 
@@ -1430,36 +1359,52 @@ document.getElementById("materialNumber")
 
 
 // ==========================================
-// CAMERA BARCODE SCANNER
+// CAMERA SCANNER
 // ==========================================
 
 let html5Scanner = null;
+let scannerStarting = false;
 
 async function startScanner() {
 
-  if (typeof Html5Qrcode === "undefined") {
+  if(scannerStarting || html5Scanner) return;
+
+  if(typeof Html5Qrcode === "undefined") {
     alert("Scanner library could not be loaded. Check your internet connection.");
     return;
   }
 
-  document.getElementById("readerContainer")
-    .classList.remove("hidden");
+  const container = document.getElementById("readerContainer");
+
+  container.classList.remove("hidden");
+
+  scannerStarting = true;
 
   try {
 
-    html5Scanner = new Html5Qrcode("reader");
+    html5Scanner = new Html5Qrcode("reader",{
+      verbose:false,
+      formatsToSupport:[
+        Html5QrcodeSupportedFormats.CODE_128
+      ]
+    });
 
     await html5Scanner.start(
 
-      { facingMode: "environment" },
+      {facingMode:"environment"},
 
       {
-        fps: 10,
-        qrbox: { width: 280, height: 130 }
+        fps:15,
+        qrbox:(width,height) => ({
+          width:Math.min(width-20,450),
+          height:Math.min(height-20,180)
+        }),
+        aspectRatio:1.5
       },
 
       (decodedText) => {
 
+        // CODE128 contains only Material Number.
         fillMaterial(decodedText);
 
         stopScanner();
@@ -1470,14 +1415,21 @@ async function startScanner() {
 
     );
 
-  } catch (error) {
+  } catch(error) {
 
-    alert("Camera cannot be opened. Please allow camera access and use HTTPS.");
-
-    document.getElementById("readerContainer")
-      .classList.add("hidden");
+    console.error("Scanner error:",error);
 
     html5Scanner = null;
+
+    container.classList.add("hidden");
+
+    alert(
+      "Camera cannot be opened. Please check camera permission, HTTPS, and browser support."
+    );
+
+  } finally {
+
+    scannerStarting = false;
 
   }
 
@@ -1486,21 +1438,27 @@ async function startScanner() {
 
 async function stopScanner() {
 
-  if (html5Scanner) {
+  if(!html5Scanner) {
+    document.getElementById("readerContainer")
+      .classList.add("hidden");
+    return;
+  }
 
-    try {
+  const scanner = html5Scanner;
 
-      if (html5Scanner.isScanning) {
-        await html5Scanner.stop();
-      }
+  html5Scanner = null;
 
-      html5Scanner.clear();
+  try {
 
-    } catch (error) {
-      console.log("Scanner closed.");
+    if(scanner.isScanning) {
+      await scanner.stop();
     }
 
-    html5Scanner = null;
+    scanner.clear();
+
+  } catch(error) {
+
+    console.log("Scanner stopped.");
 
   }
 
@@ -1511,7 +1469,7 @@ async function stopScanner() {
 
 
 // ==========================================
-// SAVE ISSUING TRANSACTION
+// SAVE ISSUING
 // ==========================================
 
 function saveIssuing() {
@@ -1538,7 +1496,7 @@ function saveIssuing() {
 
   alertBox.classList.add("hidden");
 
-  if (!material || !reservation || !issuedBy || !receivedBy) {
+  if(!material || !reservation || !issuedBy || !receivedBy) {
 
     alert("Please scan a material barcode and complete all required fields.");
 
@@ -1548,8 +1506,7 @@ function saveIssuing() {
 
   const records = getRecords();
 
-  // Prevent duplicate issuing for the same
-  // Reservation Number + Material Number.
+  // Check same Reservation + Material combination.
 
   const duplicate = records.find(record =>
 
@@ -1561,7 +1518,7 @@ function saveIssuing() {
 
   );
 
-  if (duplicate) {
+  if(duplicate) {
 
     alertBox.innerHTML = `
 
@@ -1592,31 +1549,31 @@ function saveIssuing() {
 
   const record = {
 
-    id: (window.crypto && crypto.randomUUID)
+    id:(window.crypto && crypto.randomUUID)
       ? crypto.randomUUID()
       : String(Date.now()),
 
-    material: material,
-    description: description,
-    location: location,
+    material:material,
+    description:description,
+    location:location,
 
-    reservation: reservation,
+    reservation:reservation,
 
-    issuedBy: issuedBy,
-    receivedBy: receivedBy,
+    issuedBy:issuedBy,
+    receivedBy:receivedBy,
 
-    date: now.toLocaleDateString("en-GB"),
-    time: now.toLocaleTimeString("en-GB"),
+    date:now.toLocaleDateString("en-GB"),
+    time:now.toLocaleTimeString("en-GB"),
 
-    timestamp: now.getTime(),
+    timestamp:now.getTime(),
 
-    status: "Issued"
+    status:"Issued"
 
   };
 
   records.unshift(record);
 
-  writeStorage(RECORD_KEY, records);
+  writeStorage(RECORD_KEY,records);
 
   alert("Issuing record saved successfully!");
 
@@ -1630,7 +1587,7 @@ function saveIssuing() {
 
 
 // ==========================================
-// RESET ISSUING FORM
+// RESET ISSUING
 // ==========================================
 
 function clearIssuing() {
@@ -1645,6 +1602,9 @@ function clearIssuing() {
   document.getElementById("receivedBy").value = "";
 
   document.getElementById("duplicateAlert")
+    .classList.add("hidden");
+
+  document.getElementById("scanSuccess")
     .classList.add("hidden");
 
 }
@@ -1677,15 +1637,15 @@ function updateDashboard() {
   document.getElementById("todayIssuing").textContent =
     todayRecords.length;
 
-  const recent = issued.slice(0, 7);
+  const recent = issued.slice(0,7);
 
   const tbody = document.getElementById("recentTable");
 
-  if (!recent.length) {
+  if(!recent.length) {
 
     tbody.innerHTML = `
       <tr>
-        <td colspan="7" class="empty">
+        <td colspan="7" style="text-align:center;padding:30px;color:#718096;">
           No issuing records available.
         </td>
       </tr>
@@ -1698,23 +1658,13 @@ function updateDashboard() {
   tbody.innerHTML = recent.map(r => `
 
     <tr>
-
       <td>${escapeHTML(r.reservation)}</td>
-
       <td>${escapeHTML(r.material)}</td>
-
       <td>${escapeHTML(r.description || "-")}</td>
-
       <td>${escapeHTML(r.issuedBy)}</td>
-
       <td>${escapeHTML(r.receivedBy)}</td>
-
       <td>${escapeHTML(r.date)} ${escapeHTML(r.time)}</td>
-
-      <td>
-        <span class="status status-issued">Issued</span>
-      </td>
-
+      <td><span class="status status-issued">Issued</span></td>
     </tr>
 
   `).join("");
@@ -1753,11 +1703,11 @@ function renderHistory() {
 
   const tbody = document.getElementById("historyTable");
 
-  if (!filtered.length) {
+  if(!filtered.length) {
 
     tbody.innerHTML = `
       <tr>
-        <td colspan="9" class="empty">
+        <td colspan="9" style="text-align:center;padding:30px;color:#718096;">
           No matching issuing records found.
         </td>
       </tr>
@@ -1767,30 +1717,18 @@ function renderHistory() {
 
   }
 
-  tbody.innerHTML = filtered.map((r, index) => `
+  tbody.innerHTML = filtered.map((r,index) => `
 
     <tr>
-
-      <td>${index + 1}</td>
-
+      <td>${index+1}</td>
       <td>${escapeHTML(r.reservation)}</td>
-
       <td>${escapeHTML(r.material)}</td>
-
       <td>${escapeHTML(r.description || "-")}</td>
-
       <td>${escapeHTML(r.issuedBy)}</td>
-
       <td>${escapeHTML(r.receivedBy)}</td>
-
       <td>${escapeHTML(r.date)}</td>
-
       <td>${escapeHTML(r.time)}</td>
-
-      <td>
-        <span class="status status-issued">Issued</span>
-      </td>
-
+      <td><span class="status status-issued">Issued</span></td>
     </tr>
 
   `).join("");
@@ -1806,12 +1744,9 @@ function exportCSV() {
 
   const records = getRecords();
 
-  if (!records.length) {
-
+  if(!records.length) {
     alert("No records available to export.");
-
     return;
-
   }
 
   const headers = [
@@ -1843,21 +1778,15 @@ function exportCSV() {
   ]);
 
   function csvCell(value) {
-
-    return '"' + String(value ?? "").replace(/"/g, '""') + '"';
-
+    return '"' + String(value ?? "").replace(/"/g,'""') + '"';
   }
 
-  const csv = [headers, ...rows]
-
+  const csv = [headers,...rows]
     .map(row => row.map(csvCell).join(","))
-
     .join("\r\n");
 
-  const blob = new Blob(["\uFEFF" + csv], {
-
-    type: "text/csv;charset=utf-8;"
-
+  const blob = new Blob(["\uFEFF"+csv],{
+    type:"text/csv;charset=utf-8;"
   });
 
   const url = URL.createObjectURL(blob);
@@ -1865,7 +1794,6 @@ function exportCSV() {
   const link = document.createElement("a");
 
   link.href = url;
-
   link.download = "SCM_Issuing_History.csv";
 
   link.click();
@@ -1880,9 +1808,7 @@ function exportCSV() {
 // ==========================================
 
 renderLabels();
-
 updateDashboard();
-
 renderHistory();
 
 </script>
