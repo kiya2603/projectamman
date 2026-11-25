@@ -1,207 +1,1891 @@
+
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Warehouse Barcode Management</title>
+<title>Warehouse Issuing & Barcode Tracking System</title>
+
 <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/JsBarcode.all.min.js"></script>
-<script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+<script src="https://unpkg.com/html5-qrcode"></script>
+
 <style>
-:root{--navy:#17365d;--blue:#245b91;--blue-light:#edf4fa;--bg:#f4f6f9;--border:#e1e6ed;--text:#263445;--muted:#738095;--green:#25834a;--red:#c0392b;--orange:#a66b13}
-*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:var(--bg);color:var(--text);overflow:hidden}
-button,input,select{font-family:inherit}button{border:0;border-radius:6px;padding:11px 15px;font-size:13px;font-weight:600;cursor:pointer}button:disabled{opacity:.5;cursor:not-allowed}
-.primary{background:var(--blue);color:white}.secondary{background:var(--blue-light);color:var(--navy)}.danger{background:#fff0ef;color:var(--red)}
-input,select{width:100%;padding:11px 12px;border:1px solid #d6dde6;border-radius:6px;outline:none;font-size:13px;background:white;color:var(--text)}input:focus,select:focus{border-color:var(--blue)}
-label{display:block;font-size:12px;font-weight:bold;color:#536174;margin-bottom:7px}
-.app{display:flex;height:100vh;width:100%}.sidebar{width:245px;min-width:245px;background:var(--navy);color:white;display:flex;flex-direction:column;height:100vh;overflow-y:auto}
-.brand{padding:25px 20px 22px;border-bottom:1px solid #ffffff22}.brand h2{font-size:17px;margin:0 0 7px}.brand p{font-size:11px;color:#c6d5e6;margin:0;line-height:1.5}
-.nav-label{padding:22px 20px 9px;font-size:10px;color:#9fb4cc;font-weight:bold;letter-spacing:1px}.nav-menu{padding:0 11px}
-.nav-btn{display:flex;align-items:center;gap:12px;width:100%;padding:12px 13px;margin:3px 0;background:transparent;color:#d7e2ef;text-align:left;border-radius:6px;font-size:13px;font-weight:500}
-.nav-btn:hover{background:#ffffff17}.nav-btn.active{background:white;color:var(--navy);font-weight:bold}.nav-icon{width:20px;text-align:center;font-size:15px}
-.sidebar-footer{margin-top:auto;padding:17px 19px;border-top:1px solid #ffffff22;color:#b8c9dc;font-size:11px;line-height:1.6}
-.main{flex:1;min-width:0;height:100vh;display:flex;flex-direction:column}.topbar{min-height:67px;background:white;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 28px;gap:15px}
-.topbar-title{font-size:15px;font-weight:bold;color:var(--navy)}.topbar-subtitle{font-size:11px;color:var(--muted);margin-top:4px}.topbar-right{font-size:12px;color:var(--muted)}
-.content{flex:1;overflow-y:auto;padding:27px 30px 40px}.page{display:none;max-width:1250px;margin:0 auto}.page.active{display:block}
-.page-heading{margin-bottom:22px}.page-heading h1{font-size:22px;color:var(--navy);margin:0 0 7px}.page-heading p{font-size:13px;color:var(--muted);margin:0;line-height:1.5}
-.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:15px;margin-bottom:20px}.stat-card,.panel{background:white;border:1px solid var(--border);border-radius:9px}.stat-card{padding:19px}
-.stat-label{font-size:12px;color:var(--muted)}.stat-value{font-size:25px;color:var(--navy);font-weight:bold;margin-top:10px}.stat-note{font-size:11px;color:var(--muted);margin-top:6px}
-.panel{padding:21px;margin-bottom:18px}.panel-header{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:17px}.panel-header h3{font-size:15px;color:var(--navy);margin:0}
-.form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}.form-action{margin-top:18px;display:flex;gap:9px;flex-wrap:wrap}
-.table-wrap{overflow-x:auto}table{width:100%;border-collapse:collapse;font-size:12px;min-width:600px}th{background:#f5f7fa;color:#64748b;text-align:left;padding:13px 12px;font-size:10px;text-transform:uppercase;white-space:nowrap}
-td{padding:13px 12px;border-bottom:1px solid var(--border);vertical-align:middle}tbody tr:hover{background:#fafbfd}.code{color:var(--blue);font-weight:bold}.empty{text-align:center;color:var(--muted);padding:25px}.search{max-width:260px}
-.note{padding:13px 15px;background:var(--blue-light);border-left:3px solid var(--blue);color:#40546b;font-size:12px;line-height:1.6;border-radius:4px;margin-top:16px}
-.badge{display:inline-block;padding:5px 8px;border-radius:20px;font-size:10px;font-weight:bold;white-space:nowrap}.badge-green{background:#eaf6ee;color:#25834a}.badge-red{background:#fff0ef;color:#c0392b}.badge-orange{background:#fff5e6;color:#a66b13}.badge-blue{background:#edf4fa;color:#245b91}
-.filter-row,.camera-controls{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}.filter-btn{background:#f0f2f5;color:#596779;padding:9px 13px;font-size:11px}.filter-btn.active{background:var(--navy);color:white}
-.two-col{display:grid;grid-template-columns:1fr 1fr;gap:17px}.section-caption{font-size:12px;color:var(--muted);line-height:1.6;margin:0 0 17px}
-.barcode-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.barcode-card{border:1px solid var(--border);border-radius:8px;padding:17px;text-align:center}.barcode-card h4{font-size:13px;color:var(--navy);margin:0 0 5px}.barcode-card p{font-size:11px;color:var(--muted);margin:0 0 10px}.barcode-card svg{width:100%;max-width:250px;height:70px}.barcode-number{font-size:11px;font-weight:bold;letter-spacing:1px;margin-top:5px}
-.camera-box{padding:17px;background:#f8fbfe;border:1px dashed #b9c9da;border-radius:8px;margin-top:17px}#cameraReader,#stockCameraReader{width:100%;max-width:520px;margin:12px auto;overflow:hidden;border-radius:8px}.camera-status{font-size:12px;color:var(--muted);line-height:1.6}
-.result{margin-top:16px;padding:14px;background:#f5f7fa;border:1px solid var(--border);border-radius:7px;font-size:13px;line-height:1.6}.result.success{background:#edf8f1;border-color:#b9dfc6;color:#21643a}.result.error{background:#fff1f0;border-color:#f0c1bd;color:#a12c25}.result.warning{background:#fff8e8;border-color:#ead6a4;color:#805b13}
-.progress{height:8px;background:#e9eef4;border-radius:20px;overflow:hidden;margin-top:10px}.progress-bar{height:100%;background:#2d8a52;width:0;transition:.2s}
-.alert-item{display:flex;align-items:flex-start;justify-content:space-between;gap:15px;padding:13px 0;border-bottom:1px solid var(--border);font-size:12px}.alert-item:last-child{border-bottom:0}.alert-item strong{display:block;color:var(--navy);margin-bottom:5px}.alert-item small{color:var(--muted)}.alert-empty{font-size:12px;color:var(--muted);padding:15px 0}
-.mobile-menu{display:none}
-@media(max-width:950px){.sidebar{width:210px;min-width:210px}.content{padding:22px 18px}.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.barcode-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(max-width:650px){body{overflow:auto}.app{height:100vh}.sidebar{position:fixed;z-index:20;left:-250px;top:0;bottom:0;transition:left .2s;width:245px}.sidebar.open{left:0}.main{width:100%;height:100vh}.topbar{padding:0 15px;min-height:62px}.mobile-menu{display:block;background:var(--blue-light);color:var(--navy);padding:9px 11px}.content{padding:20px 13px 30px}.two-col,.form-grid{grid-template-columns:1fr}.barcode-grid{grid-template-columns:1fr}.topbar-right{display:none}.panel{padding:16px}.panel-header{align-items:flex-start;flex-direction:column}}
-@media print{body{overflow:visible;background:white}.sidebar,.topbar,.page-heading,.stats,.panel:not(#barcodePanel){display:none!important}.main,.content,.page{display:block!important;height:auto;overflow:visible;padding:0;margin:0}#barcodePanel{display:block!important;border:0}.barcode-grid{grid-template-columns:repeat(2,1fr)}.barcode-card{break-inside:avoid}}
+:root {
+  --navy: #12294a;
+  --blue: #245b91;
+  --light-blue: #eaf2fa;
+  --bg: #f4f7fb;
+  --white: #ffffff;
+  --text: #26364a;
+  --muted: #718096;
+  --border: #dce5ef;
+  --green: #16845b;
+  --red: #c03939;
+  --orange: #b7791f;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+.app {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* SIDEBAR */
+
+.sidebar {
+  width: 245px;
+  flex-shrink: 0;
+  background: var(--navy);
+  color: white;
+  padding: 25px 17px;
+}
+
+.brand {
+  padding: 5px 10px 27px;
+  border-bottom: 1px solid #34506e;
+}
+
+.brand h2 {
+  font-size: 19px;
+  margin-bottom: 7px;
+}
+
+.brand p {
+  font-size: 11px;
+  color: #b9cce0;
+}
+
+.menu-title {
+  font-size: 10px;
+  color: #9bb1c9;
+  margin: 25px 10px 12px;
+  letter-spacing: 1.2px;
+}
+
+.nav-btn {
+  display: block;
+  width: 100%;
+  padding: 13px 12px;
+  margin-bottom: 5px;
+  text-align: left;
+  background: transparent;
+  color: #dce7f3;
+  border: none;
+  border-radius: 7px;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.nav-btn:hover,
+.nav-btn.active {
+  background: var(--blue);
+  color: white;
+}
+
+/* MAIN */
+
+.main {
+  flex: 1;
+  min-width: 0;
+}
+
+.topbar {
+  min-height: 72px;
+  background: white;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 30px;
+}
+
+.topbar h3 {
+  color: var(--navy);
+  font-size: 17px;
+}
+
+.topbar span {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.content {
+  max-width: 1450px;
+  margin: auto;
+  padding: 28px;
+}
+
+.page {
+  display: none;
+}
+
+.page.active {
+  display: block;
+}
+
+.page-heading {
+  margin-bottom: 23px;
+}
+
+.page-heading h1 {
+  color: var(--navy);
+  font-size: 24px;
+  margin-bottom: 8px;
+}
+
+.page-heading p {
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+/* CARDS */
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 17px;
+  margin-bottom: 24px;
+}
+
+.stat-card {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 21px;
+}
+
+.stat-card p {
+  color: var(--muted);
+  font-size: 12px;
+  margin-bottom: 12px;
+}
+
+.stat-card h2 {
+  color: var(--navy);
+  font-size: 28px;
+}
+
+.panel {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 23px;
+  margin-bottom: 20px;
+}
+
+.panel-title {
+  color: var(--navy);
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+/* FORM */
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 17px;
+}
+
+.field {
+  margin-bottom: 17px;
+}
+
+.field label {
+  display: block;
+  color: #43546a;
+  font-size: 12px;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+input, select {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  outline: none;
+  background: white;
+  color: var(--text);
+  font-size: 13px;
+}
+
+input:focus, select:focus {
+  border-color: var(--blue);
+  box-shadow: 0 0 0 2px rgba(36,91,145,.08);
+}
+
+input[readonly] {
+  background: #f1f4f8;
+  color: #526477;
+}
+
+.hint {
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.5;
+  margin-top: 6px;
+}
+
+/* BUTTONS */
+
+.btn {
+  padding: 12px 18px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: bold;
+  transition: .2s;
+}
+
+.btn-primary {
+  background: var(--blue);
+  color: white;
+}
+
+.btn-primary:hover {
+  background: var(--navy);
+}
+
+.btn-secondary {
+  background: #eaf0f7;
+  color: var(--blue);
+}
+
+.btn-danger {
+  background: #fff0f0;
+  color: var(--red);
+}
+
+.btn-success {
+  background: #e8f7ef;
+  color: var(--green);
+}
+
+.button-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 9px;
+}
+
+.btn:disabled {
+  opacity: .5;
+  cursor: not-allowed;
+}
+
+/* BARCODE LABEL GENERATOR */
+
+.label-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.label-toolbar h2 {
+  color: var(--navy);
+  font-size: 18px;
+}
+
+.label-count {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.labels-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.barcode-label {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  min-width: 0;
+  padding: 23px 17px;
+  text-align: center;
+  position: relative;
+  break-inside: avoid;
+}
+
+.barcode-label h3 {
+  color: var(--navy);
+  font-size: 18px;
+  margin-bottom: 8px;
+  overflow-wrap: anywhere;
+}
+
+.barcode-label .location {
+  color: #75849a;
+  font-size: 13px;
+  margin-bottom: 17px;
+}
+
+.barcode-label svg {
+  display: block;
+  width: 100%;
+  height: 78px;
+  margin: 0 auto;
+}
+
+.barcode-label .material-code {
+  color: #26364a;
+  font-size: 15px;
+  font-weight: bold;
+  letter-spacing: 1px;
+  margin-top: 10px;
+  overflow-wrap: anywhere;
+}
+
+.label-actions {
+  display: flex;
+  justify-content: center;
+  margin-top: 14px;
+}
+
+.label-actions button {
+  font-size: 10px;
+  padding: 8px 12px;
+}
+
+.empty-labels {
+  text-align: center;
+  padding: 45px 15px;
+  color: var(--muted);
+  background: #fafcff;
+  border: 1px dashed #cbd7e5;
+  border-radius: 9px;
+  font-size: 13px;
+}
+
+.label-empty-icon {
+  font-size: 30px;
+  margin-bottom: 10px;
+}
+
+/* TABLE */
+
+.table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  min-width: 750px;
+  border-collapse: collapse;
+}
+
+th {
+  background: #f1f5fa;
+  color: #4a5c72;
+  text-align: left;
+  font-size: 11px;
+  padding: 13px;
+  white-space: nowrap;
+}
+
+td {
+  border-bottom: 1px solid var(--border);
+  padding: 13px;
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+tbody tr:hover {
+  background: #f8fafd;
+}
+
+.status {
+  display: inline-block;
+  border-radius: 20px;
+  padding: 5px 10px;
+  font-size: 10px;
+  font-weight: bold;
+}
+
+.status-issued {
+  background: #e6f6ed;
+  color: var(--green);
+}
+
+.toolbar {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 17px;
+}
+
+.toolbar input {
+  max-width: 380px;
+}
+
+/* NOTICE */
+
+.notice {
+  padding: 14px;
+  border-radius: 7px;
+  font-size: 12px;
+  line-height: 1.7;
+  margin-bottom: 16px;
+}
+
+.notice-info {
+  background: #edf5ff;
+  color: #275785;
+}
+
+.notice-warning {
+  background: #fff6e6;
+  color: #986415;
+}
+
+.notice-danger {
+  background: #fff0f0;
+  color: var(--red);
+}
+
+.hidden {
+  display: none !important;
+}
+
+/* SCANNER */
+
+.scan-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.scan-row input {
+  flex: 1;
+}
+
+.scanner-box {
+  text-align: center;
+  background: #f8fafd;
+  border: 1px solid var(--border);
+  padding: 20px;
+  border-radius: 8px;
+  margin-top: 15px;
+}
+
+#reader {
+  width: 100%;
+  max-width: 450px;
+  margin: 15px auto;
+  overflow: hidden;
+  border-radius: 8px;
+}
+
+/* PRINT */
+
+@page {
+  size: A4 portrait;
+  margin: 12mm;
+}
+
+@media print {
+
+  body.printing-labels {
+    background: white;
+  }
+
+  body.printing-labels * {
+    visibility: hidden !important;
+  }
+
+  body.printing-labels #printLabelsArea,
+  body.printing-labels #printLabelsArea * {
+    visibility: visible !important;
+  }
+
+  body.printing-labels #printLabelsArea {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    background: white;
+  }
+
+  body.printing-labels .labels-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12mm;
+  }
+
+  body.printing-labels .barcode-label {
+    border: 1px solid #cbd5e1;
+    border-radius: 5px;
+    padding: 15px 10px;
+    min-height: 145px;
+    break-inside: avoid;
+  }
+
+  body.printing-labels .barcode-label h3 {
+    font-size: 15px;
+  }
+
+  body.printing-labels .barcode-label .location {
+    font-size: 11px;
+  }
+
+  body.printing-labels .barcode-label svg {
+    height: 65px;
+  }
+
+  body.printing-labels .label-actions,
+  body.printing-labels .no-print {
+    display: none !important;
+  }
+
+  body.printing-labels .label-count {
+    display: none;
+  }
+}
+
+/* RESPONSIVE */
+
+@media(max-width:1000px) {
+  .labels-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media(max-width:850px) {
+
+  .app {
+    display: block;
+  }
+
+  .sidebar {
+    width: 100%;
+    padding: 12px;
+  }
+
+  .brand {
+    padding: 8px;
+  }
+
+  .menu-title {
+    display: none;
+  }
+
+  .nav-list {
+    display: flex;
+    gap: 5px;
+    overflow-x: auto;
+    margin-top: 10px;
+  }
+
+  .nav-btn {
+    width: auto;
+    white-space: nowrap;
+    padding: 11px;
+    font-size: 11px;
+  }
+
+  .content {
+    padding: 17px;
+  }
+
+  .topbar {
+    padding: 15px 17px;
+  }
+}
+
+@media(max-width:550px) {
+
+  .stats,
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .labels-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .panel {
+    padding: 16px;
+  }
+
+  .label-toolbar {
+    align-items: flex-start;
+  }
+}
 </style>
 </head>
+
 <body>
+
 <div class="app">
-<aside class="sidebar" id="sidebar">
- <div class="brand"><h2>Warehouse Management</h2><p>Barcode, Inventory & Expiry Monitoring</p></div>
- <div class="nav-label">MAIN MENU</div><nav class="nav-menu">
-  <button class="nav-btn active" data-page="dashboard"><span class="nav-icon">▦</span>Dashboard</button>
-  <button class="nav-btn" data-page="materials"><span class="nav-icon">▤</span>Material Database</button>
-  <button class="nav-btn" data-page="add"><span class="nav-icon">＋</span>Add New Material</button>
- </nav>
- <div class="nav-label">WAREHOUSE OPERATIONS</div><nav class="nav-menu">
-  <button class="nav-btn" data-page="stockin"><span class="nav-icon">↓</span>Stock In</button>
-  <button class="nav-btn" data-page="stockout"><span class="nav-icon">↑</span>Stock Out</button>
-  <button class="nav-btn" data-page="verify"><span class="nav-icon">⌕</span>Scan & Verify</button>
- </nav>
- <div class="nav-label">MONITORING</div><nav class="nav-menu">
-  <button class="nav-btn" data-page="expiry"><span class="nav-icon">◷</span>Expired Date</button>
-  <button class="nav-btn" data-page="history"><span class="nav-icon">▧</span>Transaction History</button>
-  <button class="nav-btn" data-page="verificationHistory"><span class="nav-icon">☷</span>Verification History</button>
- </nav>
- <div class="nav-label">BARCODE</div><nav class="nav-menu"><button class="nav-btn" data-page="barcodes"><span class="nav-icon">▥</span>Barcode Labels</button></nav>
- <div class="sidebar-footer">Warehouse Barcode Management<br>Prototype Version</div>
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+
+  <div class="brand">
+    <h2>SCM WAREHOUSE</h2>
+    <p>Issuing & Barcode Tracking</p>
+  </div>
+
+  <div class="menu-title">MAIN MENU</div>
+
+  <div class="nav-list">
+    <button class="nav-btn active" onclick="showPage('dashboard',this)">
+      ▦ Dashboard
+    </button>
+
+    <button class="nav-btn" onclick="showPage('barcode',this)">
+      ▤ Barcode Generator
+    </button>
+
+    <button class="nav-btn" onclick="showPage('issuing',this)">
+      ⇧ New Issuing
+    </button>
+
+    <button class="nav-btn" onclick="showPage('history',this)">
+      ◷ Issuing History
+    </button>
+  </div>
+
 </aside>
+
+
+<!-- MAIN -->
 <main class="main">
-<header class="topbar"><div style="display:flex;align-items:center;gap:12px"><button class="mobile-menu" onclick="toggleSidebar()">☰</button><div><div class="topbar-title" id="topbarTitle">Dashboard</div><div class="topbar-subtitle">Warehouse Inventory Management System</div></div></div><div class="topbar-right" id="currentDate"></div></header>
-<div class="content" id="content">
 
-<section class="page active" id="page-dashboard">
- <div class="page-heading"><h1>Dashboard</h1><p>Overview of material inventory and warehouse activities.</p></div>
- <div class="stats">
-  <div class="stat-card"><div class="stat-label">Total Materials</div><div class="stat-value" id="dashMaterials">0</div><div class="stat-note">Registered materials</div></div>
-  <div class="stat-card"><div class="stat-label">Total Stock</div><div class="stat-value" id="dashStock">0</div><div class="stat-note">Available quantities</div></div>
-  <div class="stat-card"><div class="stat-label">Expiring Soon</div><div class="stat-value" id="dashExpiring">0</div><div class="stat-note">Within the next 14 days</div></div>
-  <div class="stat-card"><div class="stat-label">Expired Stock</div><div class="stat-value" id="dashExpired">0</div><div class="stat-note">Require attention</div></div>
- </div>
- <div class="two-col">
-  <div class="panel"><div class="panel-header"><h3>Expiry Alerts</h3><button class="secondary" onclick="showPage('expiry')">View All</button></div><div id="dashboardAlerts"></div></div>
-  <div class="panel"><div class="panel-header"><h3>Quick Actions</h3></div><div style="display:grid;grid-template-columns:1fr 1fr;gap:10px"><button class="secondary" onclick="showPage('stockin')">＋ Stock In</button><button class="secondary" onclick="showPage('stockout')">− Stock Out</button><button class="secondary" onclick="showPage('add')">＋ Add Material</button><button class="secondary" onclick="showPage('expiry')">◷ Expiry Monitoring</button></div><div class="note">Use the sidebar to access each warehouse feature. Each menu opens in its own workspace.</div></div>
- </div>
- <div class="panel"><div class="panel-header"><h3>Recent Transactions</h3></div><div class="table-wrap"><table><thead><tr><th>Date & Time</th><th>Type</th><th>Material</th><th>Expiry Date</th><th>Quantity</th></tr></thead><tbody id="dashboardTransactions"></tbody></table></div></div>
+<header class="topbar">
+  <h3>Warehouse Management</h3>
+  <span id="currentClock"></span>
+</header>
+
+<div class="content">
+
+
+<!-- ==================================
+     DASHBOARD
+================================== -->
+
+<section id="dashboard" class="page active">
+
+  <div class="page-heading">
+    <h1>Dashboard</h1>
+    <p>Overview of warehouse issuing transactions and barcode activities.</p>
+  </div>
+
+  <div class="stats">
+
+    <div class="stat-card">
+      <p>Total Issuing Transactions</p>
+      <h2 id="totalIssuing">0</h2>
+    </div>
+
+    <div class="stat-card">
+      <p>Unique Reservation Numbers</p>
+      <h2 id="totalReservation">0</h2>
+    </div>
+
+    <div class="stat-card">
+      <p>Today's Issuing</p>
+      <h2 id="todayIssuing">0</h2>
+    </div>
+
+  </div>
+
+  <div class="panel">
+
+    <div class="panel-title">Recent Issuing Transactions</div>
+
+    <div class="table-wrapper">
+      <table>
+
+        <thead>
+          <tr>
+            <th>Reservation Number</th>
+            <th>Material Number</th>
+            <th>Material Description</th>
+            <th>Issued By</th>
+            <th>Received By</th>
+            <th>Date & Time</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+
+        <tbody id="recentTable"></tbody>
+
+      </table>
+    </div>
+
+  </div>
+
+  <div class="notice notice-info">
+    This system is an additional digital record for warehouse issuing activities.
+    SAP remains the official source of reservation and material information.
+  </div>
+
 </section>
 
-<section class="page" id="page-materials"><div class="page-heading"><h1>Material Database</h1><p>View and search registered materials and their current stock.</p></div><div class="panel"><div class="panel-header"><h3>Registered Materials</h3><input class="search" id="materialSearch" placeholder="Search material..." oninput="renderMaterials()"></div><div class="table-wrap"><table><thead><tr><th>No.</th><th>Material Number</th><th>Material Name</th><th>Storage Location</th><th>Total Stock</th><th>Expiry Records</th></tr></thead><tbody id="materialTable"></tbody></table></div></div></section>
 
-<section class="page" id="page-add"><div class="page-heading"><h1>Add New Material</h1><p>Register a new material in the warehouse database.</p></div><div class="panel"><div class="panel-header"><h3>Material Information</h3></div><div class="form-grid">
- <div><label>Material Number *</label><input id="newNumber" placeholder="Example: MAT-006"></div><div><label>Material Name *</label><input id="newName" placeholder="Enter material name"></div><div><label>Storage Location *</label><input id="newLocation" placeholder="Example: WH-A06"></div>
- </div><div class="note">Register the material identity here. To record physical stock and its expiry date, use Stock In after saving the material.</div><div class="form-action"><button class="primary" onclick="addMaterial()">Save Material</button><button class="secondary" onclick="clearAddForm()">Clear Form</button></div></div></section>
+<!-- ==================================
+     BARCODE GENERATOR
+================================== -->
 
-<section class="page" id="page-stockin"><div class="page-heading"><h1>Stock In</h1><p>Scan incoming material, enter its quantity, and record its expiry date.</p></div>
- <div class="panel"><div class="panel-header"><h3>Incoming Stock Information</h3></div>
-  <div class="form-grid"><div><label>Material Number</label><input id="inNumber" placeholder="Automatically filled after scan" readonly></div><div><label>Material Name</label><input id="inName" placeholder="Automatically filled after scan" readonly></div><div><label>Quantity *</label><input id="inQuantity" type="number" min="1" step="1" placeholder="Enter quantity"></div><div><label>Expiry Date *</label><input id="inExpiry" type="date"></div></div>
-  <div class="camera-box"><strong style="font-size:13px">Scan Material Barcode</strong><p class="section-caption" style="margin-top:7px">Open the camera and scan the barcode label. Material details will be filled automatically.</p><div class="camera-controls"><button class="primary" id="startInCamera" onclick="startInCamera()">Open Camera</button><button class="secondary" id="stopInCamera" onclick="stopInCamera()" disabled>Stop Camera</button></div><div id="inCameraReader"></div><div class="camera-status" id="inCameraStatus">Camera is not running.</div></div>
-  <div class="form-action"><button class="primary" onclick="stockIn()">Confirm Stock In</button><button class="secondary" onclick="clearStockIn()">Reset</button></div><div class="result" id="stockInResult">Scan a registered material barcode to begin.</div>
-  <div class="note">Scan identifies the material. Stock is added only after you enter the quantity and expiry date, then select Confirm Stock In. Each Stock In record keeps its own expiry date, without requiring a batch number.</div>
- </div>
- <div class="panel"><div class="panel-header"><h3>Current Stock & Expiry Records</h3></div><div class="table-wrap"><table><thead><tr><th>Material Number</th><th>Material Name</th><th>Quantity</th><th>Expiry Date</th><th>Status</th></tr></thead><tbody id="stockInBatchTable"></tbody></table></div></div>
+<section id="barcode" class="page">
+
+  <div class="page-heading">
+    <h1>Barcode Generator & Printer</h1>
+    <p>Create, preview, and print material barcode labels.</p>
+  </div>
+
+  <div class="panel">
+
+    <div class="panel-title">Create New Barcode Label</div>
+
+    <div class="form-grid">
+
+      <div class="field">
+        <label>Material Number *</label>
+        <input
+          id="barcodeMaterial"
+          placeholder="Enter Material Number"
+        >
+      </div>
+
+      <div class="field">
+        <label>Material Description *</label>
+        <input
+          id="barcodeDescription"
+          placeholder="Enter Material Name"
+        >
+      </div>
+
+      <div class="field">
+        <label>Storage Location *</label>
+        <input
+          id="barcodeLocation"
+          placeholder="Example: WH-A01"
+        >
+      </div>
+
+    </div>
+
+    <div class="notice notice-info">
+      Barcode contains the Material Number, Material Description,
+      and Storage Location so the information can be identified
+      when scanned.
+    </div>
+
+    <div class="button-row">
+
+      <button class="btn btn-primary" onclick="generateLabel()">
+        + Generate Barcode Label
+      </button>
+
+      <button class="btn btn-secondary" onclick="clearBarcodeForm()">
+        Clear Form
+      </button>
+
+    </div>
+
+  </div>
+
+
+  <!-- GENERATED LABELS -->
+
+  <div class="panel">
+
+    <div class="label-toolbar">
+
+      <div>
+        <h2>Generated Barcode Labels</h2>
+        <p class="label-count" id="labelCount">0 barcode labels</p>
+      </div>
+
+      <button class="btn btn-primary no-print"
+        onclick="printAllLabels()">
+        Print Barcode Labels
+      </button>
+
+    </div>
+
+    <div id="printLabelsArea">
+
+      <div class="labels-grid" id="labelsGrid"></div>
+
+    </div>
+
+  </div>
+
 </section>
 
-<section class="page" id="page-stockout"><div class="page-heading"><h1>Stock Out</h1><p>Scan the material barcode and record outgoing stock.</p></div><div class="panel"><div class="panel-header"><h3>Stock Out Request</h3></div>
- <div class="form-grid"><div><label>Material Number</label><input id="outNumber" placeholder="Automatically filled after scan" readonly></div><div><label>Material Name</label><input id="outName" placeholder="Material name" readonly></div><div><label>Available Stock</label><input id="outAvailable" placeholder="Available quantity" readonly></div><div><label>Outgoing Quantity *</label><input id="outQuantity" type="number" min="1" step="1" placeholder="Enter quantity"></div></div>
- <div class="camera-box"><strong style="font-size:13px">Scan Material Barcode</strong><p class="section-caption" style="margin-top:7px">Open the camera and point it at the barcode label. The material will be selected automatically.</p><div class="camera-controls"><button class="primary" id="startStockCamera" onclick="startStockCamera()">Open Camera</button><button class="secondary" id="stopStockCamera" onclick="stopStockCamera()" disabled>Stop Camera</button></div><div id="stockCameraReader"></div><div class="camera-status" id="stockCameraStatus">Camera is not running.</div></div>
- <div class="form-action"><button class="primary" onclick="stockOut()">Confirm Stock Out</button><button class="secondary" onclick="clearStockOut()">Reset</button></div><div class="result" id="stockOutResult">Scan a barcode to select a material.</div><div class="note"><strong>FEFO (First Expired, First Out):</strong> Stock is deducted from the earliest-expiring eligible stock record first. Expired stock is excluded. Barcode identifies the material, not an individual stock record.</div>
-</div></section>
 
-<section class="page" id="page-verify"><div class="page-heading"><h1>Scan & Verify</h1><p>Verify whether the scanned barcode matches the requested material.</p></div><div class="panel"><div class="panel-header"><h3>Verification Request</h3></div><div class="form-grid"><div><label>Requested Material</label><select id="requestedMaterial"></select></div><div><label>Requested Quantity</label><input id="requestedQuantity" type="number" min="1" placeholder="Enter quantity"></div></div>
- <div class="camera-box"><strong style="font-size:13px">Scan Barcode Using Phone Camera</strong><p class="section-caption" style="margin-top:7px">Select the requested material and quantity, then scan its barcode.</p><div class="camera-controls"><button class="primary" id="startVerifyCamera" onclick="startVerifyCamera()">Open Camera</button><button class="secondary" id="stopVerifyCamera" onclick="stopVerifyCamera()" disabled>Stop Camera</button><button class="danger" onclick="resetVerification()">Reset Verification</button></div><div id="cameraReader"></div><div class="camera-status" id="verifyCameraStatus">Camera is not running.</div></div>
- <div class="result" id="verificationResult">Select a requested material and quantity to begin verification.</div><div style="margin-top:15px;font-size:12px"><div style="display:flex;justify-content:space-between"><span>Verified quantity</span><strong id="verifiedProgressText">0 / 0</strong></div><div class="progress"><div class="progress-bar" id="verifiedProgressBar"></div></div></div><div class="note">This verification feature checks the material barcode against the selected request. It does not post transactions to SAP.</div>
-</div></section>
+<!-- ==================================
+     NEW ISSUING
+================================== -->
 
-<section class="page" id="page-expiry"><div class="page-heading"><h1>Expired Date Monitoring</h1><p>Monitor expiry dates and identify materials that require attention.</p></div>
- <div class="stats"><div class="stat-card"><div class="stat-label">Expiring Soon</div><div class="stat-value" id="expirySoonCount">0</div><div class="stat-note">Within 14 days</div></div><div class="stat-card"><div class="stat-label">Expired</div><div class="stat-value" id="expiryExpiredCount">0</div><div class="stat-note">Past expiry date or today</div></div><div class="stat-card"><div class="stat-label">Valid</div><div class="stat-value" id="expiryValidCount">0</div><div class="stat-note">More than 14 days remaining</div></div><div class="stat-card"><div class="stat-label">Expiry Records</div><div class="stat-value" id="expiryTotalCount">0</div><div class="stat-note">Recorded stock entries</div></div></div>
- <div class="panel"><div class="panel-header"><h3>Expiry Alerts</h3><button class="secondary" onclick="requestNotificationPermission()">Enable Notifications</button></div><div id="expiryAlerts"></div><div class="note">Reminder levels: H-14, H-7, H-1, and Expired. Alerts are displayed when the application is opened. Browser notifications depend on browser permission.</div></div>
- <div class="panel"><div class="panel-header"><h3>Expiry List</h3><input class="search" id="expirySearch" placeholder="Search material..." oninput="renderExpiry()"></div><div class="filter-row"><button class="filter-btn active" onclick="setExpiryFilter('all',this)">All</button><button class="filter-btn" onclick="setExpiryFilter('upcoming',this)">Upcoming</button><button class="filter-btn" onclick="setExpiryFilter('expired',this)">Expired</button><button class="filter-btn" onclick="setExpiryFilter('valid',this)">Valid</button></div><div class="table-wrap"><table><thead><tr><th>Material Number</th><th>Material Name</th><th>Quantity</th><th>Expiry Date</th><th>Remaining Days</th><th>Status</th></tr></thead><tbody id="expiryTable"></tbody></table></div></div>
+<section id="issuing" class="page">
+
+  <div class="page-heading">
+    <h1>New Issuing Transaction</h1>
+    <p>Record material issuing activities and monitor transactions across warehouse shifts.</p>
+  </div>
+
+  <div class="panel">
+
+    <div class="panel-title">1. Material Identification</div>
+
+    <div class="field">
+
+      <label>Scan Material Barcode</label>
+
+      <div class="scan-row">
+
+        <input
+          id="materialNumber"
+          placeholder="Scan barcode using scanner or enter Material Number"
+        >
+
+        <button class="btn btn-secondary" onclick="startScanner()">
+          📷 Scan
+        </button>
+
+      </div>
+
+      <p class="hint">
+        Scan the generated barcode using a camera or USB barcode scanner.
+      </p>
+
+    </div>
+
+    <div id="readerContainer" class="scanner-box hidden">
+
+      <p style="font-size:12px;font-weight:bold;">
+        Camera Barcode Scanner
+      </p>
+
+      <div id="reader"></div>
+
+      <button class="btn btn-danger" onclick="stopScanner()">
+        Close Scanner
+      </button>
+
+    </div>
+
+    <div class="form-grid">
+
+      <div class="field">
+        <label>Material Number</label>
+        <input id="materialDisplay" readonly
+          placeholder="Automatically filled">
+      </div>
+
+      <div class="field">
+        <label>Material Description</label>
+        <input id="descriptionDisplay" readonly
+          placeholder="Automatically filled">
+      </div>
+
+      <div class="field">
+        <label>Storage Location</label>
+        <input id="locationDisplay" readonly
+          placeholder="Automatically filled">
+      </div>
+
+      <div class="field">
+        <label>Reservation Number (SAP) *</label>
+        <input id="reservationNumber"
+          placeholder="Enter SAP Reservation Number">
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <div class="panel">
+
+    <div class="panel-title">2. Issuing Information</div>
+
+    <div class="form-grid">
+
+      <div class="field">
+        <label>Issued By *</label>
+        <input id="issuedBy"
+          placeholder="Enter warehouse staff name">
+      </div>
+
+      <div class="field">
+        <label>Received By *</label>
+        <input id="receivedBy"
+          placeholder="Enter receiver name">
+      </div>
+
+    </div>
+
+    <div class="notice notice-info">
+      Date and time are recorded automatically when the transaction is saved.
+    </div>
+
+    <div class="button-row">
+
+      <button class="btn btn-primary" onclick="saveIssuing()">
+        Save Issuing Record
+      </button>
+
+      <button class="btn btn-secondary" onclick="clearIssuing()">
+        Reset Form
+      </button>
+
+    </div>
+
+  </div>
+
+  <div id="duplicateAlert" class="notice notice-danger hidden"></div>
+
 </section>
 
-<section class="page" id="page-history"><div class="page-heading"><h1>Transaction History</h1><p>Review recorded Stock In and Stock Out activities.</p></div><div class="panel"><div class="panel-header"><h3>Inventory Transactions</h3><button class="secondary" onclick="clearTransactionHistory()">Clear History</button></div><div class="table-wrap"><table><thead><tr><th>Date & Time</th><th>Type</th><th>Material Number</th><th>Material Name</th><th>Expiry Date</th><th>Quantity</th></tr></thead><tbody id="transactionTable"></tbody></table></div></div></section>
 
-<section class="page" id="page-verificationHistory"><div class="page-heading"><h1>Verification History</h1><p>Review previous barcode verification results.</p></div><div class="panel"><div class="panel-header"><h3>Verification Records</h3><button class="secondary" onclick="clearVerificationHistory()">Clear History</button></div><div class="table-wrap"><table><thead><tr><th>Date & Time</th><th>Scanned Code</th><th>Requested Material</th><th>Result</th></tr></thead><tbody id="verificationHistory"></tbody></table></div></div></section>
+<!-- ==================================
+     ISSUING HISTORY
+================================== -->
 
-<section class="page" id="page-barcodes"><div class="page-heading"><h1>Barcode Labels</h1><p>Automatically generated barcode labels for registered materials.</p></div><div class="panel" id="barcodePanel"><div class="panel-header"><h3>Generated Barcode Labels</h3><button class="primary" onclick="printBarcodes()">Print Barcode Labels</button></div><div class="barcode-grid" id="barcodeContainer"></div><div class="note">Each barcode is generated using its Material Number. Expiry dates are recorded separately for each Stock In entry.</div></div></section>
-</div></main></div>
+<section id="history" class="page">
+
+  <div class="page-heading">
+    <h1>Issuing History</h1>
+    <p>Search and review material issuing records from previous warehouse shifts.</p>
+  </div>
+
+  <div class="panel">
+
+    <div class="toolbar">
+
+      <input
+        id="searchHistory"
+        placeholder="Search Reservation or Material Number..."
+        oninput="renderHistory()"
+      >
+
+      <button class="btn btn-secondary" onclick="exportCSV()">
+        Export CSV
+      </button>
+
+    </div>
+
+    <div class="table-wrapper">
+
+      <table>
+
+        <thead>
+          <tr>
+            <th>No.</th>
+            <th>Reservation Number</th>
+            <th>Material Number</th>
+            <th>Material Description</th>
+            <th>Issued By</th>
+            <th>Received By</th>
+            <th>Date</th>
+            <th>Time</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+
+        <tbody id="historyTable"></tbody>
+
+      </table>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+</div>
+</main>
+</div>
+
 
 <script>
-const defaultMaterials=[
- {number:"MAT-001",name:"Safety Helmet",location:"WH-A01",batches:[{quantity:30,expiry:"2026-12-10"},{quantity:20,expiry:"2027-04-15"}]},
- {number:"MAT-002",name:"Safety Gloves",location:"WH-A02",batches:[{quantity:100,expiry:"2027-06-20"}]},
- {number:"MAT-003",name:"Safety Shoes",location:"WH-A03",batches:[{quantity:30,expiry:"2027-08-10"}]},
- {number:"MAT-004",name:"Safety Vest",location:"WH-A04",batches:[{quantity:75,expiry:"2027-02-20"}]},
- {number:"MAT-005",name:"Safety Goggles",location:"WH-A05",batches:[{quantity:40,expiry:"2026-12-01"}]}
-];
-function loadData(key,fallback){try{const v=JSON.parse(localStorage.getItem(key));return v===null?fallback:v}catch(e){return fallback}}
-let materials=loadData("warehouseMaterialsV2",null);
-if(!materials){
- const old=loadData("warehouseMaterials",null);
- materials=old&&old.length?old.map(m=>({number:m.number,name:m.name,location:m.location,batches:Number(m.stock)>0?[{quantity:Number(m.stock),expiry:""}]:[]})):defaultMaterials;
+
+// ==========================================
+// STORAGE
+// ==========================================
+
+const RECORD_KEY = "scm_issuing_records_v2";
+const LABEL_KEY = "scm_barcode_labels_v2";
+
+function readStorage(key) {
+
+  try {
+    return JSON.parse(localStorage.getItem(key)) || [];
+  } catch (error) {
+    return [];
+  }
+
 }
-materials.forEach(m=>(m.batches||[]).forEach(b=>{if(!("expiry" in b))b.expiry="";delete b.batch;}));
-let transactions=loadData("warehouseTransactions",[]),verificationHistory=loadData("warehouseVerificationHistory",[]);
-transactions=transactions.map(t=>({time:t.time,type:t.type,number:t.number,name:t.name,expiry:t.expiry||"",quantity:t.quantity}));
-let verifiedQuantity=0,expiryFilter="all";
-function saveAll(){localStorage.setItem("warehouseMaterialsV2",JSON.stringify(materials));localStorage.setItem("warehouseTransactions",JSON.stringify(transactions));localStorage.setItem("warehouseVerificationHistory",JSON.stringify(verificationHistory))}
-function totalStock(m){return (m.batches||[]).reduce((s,b)=>s+Number(b.quantity||0),0)}
-function allBatches(){const a=[];materials.forEach(m=>(m.batches||[]).forEach((b,i)=>a.push({...b,materialNumber:m.number,materialName:m.name,index:i})));return a}
-function getMaterial(n){return materials.find(m=>m.number===n)}
-function todayDate(){const d=new Date();d.setHours(0,0,0,0);return d}
-function dayDifference(date){if(!date)return null;const p=date.split("-").map(Number),d=new Date(p[0],p[1]-1,p[2]);d.setHours(0,0,0,0);return Math.round((d-todayDate())/86400000)}
-function formatDate(date){if(!date)return "Not set";const p=date.split("-");return p.length===3?`${p[2]}/${p[1]}/${p[0]}`:date}
-function getExpiryStatus(date){if(!date)return{key:"no-date",label:"No expiry date",badge:"badge-blue",days:null};const d=dayDifference(date);if(d<=0)return{key:"expired",label:"Expired",badge:"badge-red",days:d};if(d===1)return{key:"h1",label:"H-1",badge:"badge-red",days:d};if(d<=7)return{key:"h7",label:"H-7",badge:"badge-orange",days:d};if(d<=14)return{key:"h14",label:"H-14",badge:"badge-orange",days:d};return{key:"valid",label:"Valid",badge:"badge-green",days:d}}
-function escapeHTML(v){return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
-const pageTitles={dashboard:"Dashboard",materials:"Material Database",add:"Add New Material",stockin:"Stock In",stockout:"Stock Out",verify:"Scan & Verify",expiry:"Expired Date Monitoring",history:"Transaction History",verificationHistory:"Verification History",barcodes:"Barcode Labels"};
-function showPage(n){document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));document.querySelectorAll(".nav-btn").forEach(b=>b.classList.remove("active"));const p=document.getElementById("page-"+n);if(!p)return;p.classList.add("active");document.querySelectorAll(`.nav-btn[data-page="${n}"]`).forEach(b=>b.classList.add("active"));document.getElementById("topbarTitle").textContent=pageTitles[n]||n;document.getElementById("content").scrollTop=0;document.getElementById("sidebar").classList.remove("open");renderAll()}
-document.querySelectorAll(".nav-btn").forEach(b=>b.addEventListener("click",()=>showPage(b.dataset.page)));
-function toggleSidebar(){document.getElementById("sidebar").classList.toggle("open")}
-function renderMaterials(){const s=(document.getElementById("materialSearch")?.value||"").toLowerCase(),tb=document.getElementById("materialTable"),arr=materials.filter(m=>m.number.toLowerCase().includes(s)||m.name.toLowerCase().includes(s)||m.location.toLowerCase().includes(s));tb.innerHTML="";if(!arr.length){tb.innerHTML='<tr><td colspan="6" class="empty">No materials found.</td></tr>';return}arr.forEach((m,i)=>tb.innerHTML+=`<tr><td>${i+1}</td><td class="code">${escapeHTML(m.number)}</td><td>${escapeHTML(m.name)}</td><td>${escapeHTML(m.location)}</td><td><strong>${totalStock(m).toLocaleString()}</strong></td><td>${m.batches.length}</td></tr>`)}
-function addMaterial(){const number=document.getElementById("newNumber").value.trim().toUpperCase(),name=document.getElementById("newName").value.trim(),location=document.getElementById("newLocation").value.trim().toUpperCase();if(!number||!name||!location){alert("Please complete Material Number, Material Name, and Storage Location.");return}if(materials.some(m=>m.number===number)){alert("Material Number already exists.");return}materials.push({number,name,location,batches:[]});saveAll();clearAddForm();renderAll();alert("Material added successfully.");showPage("materials")}
-function clearAddForm(){["newNumber","newName","newLocation"].forEach(id=>document.getElementById(id).value="")}
-function populateSelects(){const s=document.getElementById("requestedMaterial"),old=s.value;s.innerHTML='<option value="">Select material</option>';materials.forEach(m=>{const o=document.createElement("option");o.value=m.number;o.textContent=m.number+" - "+m.name;s.appendChild(o)});if(materials.some(m=>m.number===old))s.value=old}
-function selectStockInMaterial(number){const m=getMaterial(number);if(!m)return false;document.getElementById("inNumber").value=m.number;document.getElementById("inName").value=m.name;const r=document.getElementById("stockInResult");r.className="result success";r.textContent="Material selected: "+m.number+" - "+m.name+". Enter quantity and expiry date.";return true}
-function stockIn(){const number=document.getElementById("inNumber").value,qty=Number(document.getElementById("inQuantity").value),expiry=document.getElementById("inExpiry").value,m=getMaterial(number),r=document.getElementById("stockInResult");if(!m){r.className="result warning";r.textContent="Please scan a registered material barcode first.";return}if(!Number.isInteger(qty)||qty<1){r.className="result warning";r.textContent="Enter a whole-number quantity greater than zero.";return}if(!expiry){r.className="result warning";r.textContent="Please enter the expiry date.";return}m.batches.push({quantity:qty,expiry});addTransaction("Stock In",number,expiry,qty);saveAll();document.getElementById("inQuantity").value="";document.getElementById("inExpiry").value="";r.className="result success";r.textContent="Stock In recorded. "+qty+" unit(s) added to "+m.name+"; expiry date "+formatDate(expiry)+".";renderAll()}
-function clearStockIn(){document.getElementById("inNumber").value="";document.getElementById("inName").value="";document.getElementById("inQuantity").value="";document.getElementById("inExpiry").value="";const r=document.getElementById("stockInResult");r.className="result";r.textContent="Scan a registered material barcode to begin."}
-function renderStockInBatches(){const tb=document.getElementById("stockInBatchTable"),arr=allBatches();tb.innerHTML="";if(!arr.length){tb.innerHTML='<tr><td colspan="5" class="empty">No stock records available.</td></tr>';return}arr.forEach(b=>{const st=getExpiryStatus(b.expiry);tb.innerHTML+=`<tr><td class="code">${escapeHTML(b.materialNumber)}</td><td>${escapeHTML(b.materialName)}</td><td>${b.quantity}</td><td>${formatDate(b.expiry)}</td><td><span class="badge ${st.badge}">${st.label}</span></td></tr>`})}
-function selectStockOutMaterial(n){const m=getMaterial(n);if(!m)return false;document.getElementById("outNumber").value=m.number;document.getElementById("outName").value=m.name;document.getElementById("outAvailable").value=totalStock(m);return true}
-function stockOut(){const n=document.getElementById("outNumber").value,q=Number(document.getElementById("outQuantity").value),m=getMaterial(n),r=document.getElementById("stockOutResult");if(!m){r.className="result warning";r.textContent="Please scan a registered material barcode first.";return}if(!Number.isInteger(q)||q<1){r.className="result warning";r.textContent="Enter a valid outgoing quantity.";return}const eligible=m.batches.filter(b=>b.quantity>0&&(!b.expiry||dayDifference(b.expiry)>0)).sort((a,b)=>!a.expiry?1:!b.expiry?-1:a.expiry.localeCompare(b.expiry)),available=eligible.reduce((s,b)=>s+b.quantity,0);if(q>available){r.className="result error";r.textContent="Insufficient eligible stock. Expired stock cannot be issued. Eligible stock: "+available;return}let remain=q,alloc=[];for(const b of eligible){if(remain<=0)break;const take=Math.min(b.quantity,remain);b.quantity-=take;remain-=take;alloc.push({expiry:b.expiry,quantity:take});addTransaction("Stock Out",n,b.expiry,take)}saveAll();document.getElementById("outAvailable").value=totalStock(m);document.getElementById("outQuantity").value="";r.className="result success";r.innerHTML="<strong>Stock Out recorded successfully.</strong><br>"+alloc.map(a=>`Expiry ${formatDate(a.expiry)}: ${a.quantity} unit(s)`).join("<br>")+"<br>Total outgoing: "+q;renderAll()}
-function clearStockOut(){["outNumber","outName","outAvailable","outQuantity"].forEach(id=>document.getElementById(id).value="");const r=document.getElementById("stockOutResult");r.className="result";r.textContent="Scan a barcode to select a material."}
-function addTransaction(type,number,expiry,quantity){const m=getMaterial(number);transactions.unshift({time:new Date().toLocaleString("id-ID"),type,number,name:m?.name||"-",expiry,quantity});saveAll()}
-function renderTransactions(){const tb=document.getElementById("transactionTable");tb.innerHTML="";if(!transactions.length){tb.innerHTML='<tr><td colspan="6" class="empty">No transactions recorded.</td></tr>';return}transactions.forEach(t=>tb.innerHTML+=`<tr><td>${escapeHTML(t.time)}</td><td><span class="badge ${t.type==="Stock In"?"badge-green":"badge-blue"}">${t.type}</span></td><td class="code">${escapeHTML(t.number)}</td><td>${escapeHTML(t.name)}</td><td>${formatDate(t.expiry)}</td><td>${t.quantity}</td></tr>`)}
-function clearTransactionHistory(){if(!confirm("Clear all transaction history?"))return;transactions=[];saveAll();renderAll()}
-function setExpiryFilter(f,btn){expiryFilter=f;document.querySelectorAll(".filter-btn").forEach(b=>b.classList.remove("active"));btn.classList.add("active");renderExpiry()}
-function renderExpiry(){const s=(document.getElementById("expirySearch")?.value||"").toLowerCase(),tb=document.getElementById("expiryTable"),arr=allBatches().filter(b=>{const st=getExpiryStatus(b.expiry),match=b.materialNumber.toLowerCase().includes(s)||b.materialName.toLowerCase().includes(s);let f=true;if(expiryFilter==="upcoming")f=["h14","h7","h1"].includes(st.key);if(expiryFilter==="expired")f=st.key==="expired";if(expiryFilter==="valid")f=st.key==="valid"||st.key==="no-date";return match&&f});tb.innerHTML="";if(!arr.length){tb.innerHTML='<tr><td colspan="6" class="empty">No expiry records found.</td></tr>';return}arr.forEach(b=>{const st=getExpiryStatus(b.expiry),days=st.days===null?"-":st.days<0?Math.abs(st.days)+" days overdue":st.days===0?"Today":st.days+" days";tb.innerHTML+=`<tr><td class="code">${escapeHTML(b.materialNumber)}</td><td>${escapeHTML(b.materialName)}</td><td>${b.quantity}</td><td>${formatDate(b.expiry)}</td><td>${days}</td><td><span class="badge ${st.badge}">${st.label}</span></td></tr>`})}
-function getActiveExpiryAlerts(){return allBatches().filter(b=>b.quantity>0&&b.expiry).map(b=>({...b,status:getExpiryStatus(b.expiry)})).filter(b=>["h14","h7","h1","expired"].includes(b.status.key)).sort((a,b)=>a.status.days-b.status.days)}
-function renderExpiryAlerts(){const arr=getActiveExpiryAlerts(),c=document.getElementById("expiryAlerts"),d=document.getElementById("dashboardAlerts");if(!arr.length){c.innerHTML=d.innerHTML='<div class="alert-empty">No active expiry alerts.</div>';return}const h=arr.map(b=>`<div class="alert-item"><div><strong>${escapeHTML(b.materialNumber)} - ${escapeHTML(b.materialName)}</strong><small>Qty: ${b.quantity} · Expiry: ${formatDate(b.expiry)}</small></div><span class="badge ${b.status.badge}">${b.status.label}</span></div>`).join("");c.innerHTML=h;d.innerHTML=arr.slice(0,4).map(b=>`<div class="alert-item"><div><strong>${escapeHTML(b.materialNumber)} - ${escapeHTML(b.materialName)}</strong><small>Qty: ${b.quantity} · Expiry: ${formatDate(b.expiry)}</small></div><span class="badge ${b.status.badge}">${b.status.label}</span></div>`).join("")}
-function updateExpirySummary(){const a=allBatches(),soon=a.filter(b=>b.quantity>0&&dayDifference(b.expiry)>0&&dayDifference(b.expiry)<=14).length,expired=a.filter(b=>b.quantity>0&&b.expiry&&dayDifference(b.expiry)<=0).length,valid=a.filter(b=>b.quantity>0&&(!b.expiry||dayDifference(b.expiry)>14)).length;document.getElementById("expirySoonCount").textContent=soon;document.getElementById("expiryExpiredCount").textContent=expired;document.getElementById("expiryValidCount").textContent=valid;document.getElementById("expiryTotalCount").textContent=a.length}
-function checkExpiryNotifications(){const alerts=getActiveExpiryAlerts(),today=new Date().toISOString().slice(0,10),notified=loadData("warehouseExpiryNotified",{});alerts.forEach(b=>{const key=[b.materialNumber,b.expiry,b.status.key,today].join("_");if(notified[key])return;const msg=`${b.materialName} - ${b.status.label} (Expiry: ${formatDate(b.expiry)})`;if("Notification"in window&&Notification.permission==="granted"){try{new Notification("Warehouse Expiry Reminder",{body:msg})}catch(e){}}notified[key]=true});localStorage.setItem("warehouseExpiryNotified",JSON.stringify(notified))}
-function requestNotificationPermission(){if(!("Notification"in window)){alert("This browser does not support notifications.");return}Notification.requestPermission().then(p=>{if(p==="granted"){alert("Browser notifications enabled.");checkExpiryNotifications()}else alert("Notification permission was not granted.")})}
-function renderBarcodes(){const c=document.getElementById("barcodeContainer");c.innerHTML="";if(typeof JsBarcode==="undefined"){c.innerHTML='<div class="empty">Barcode library could not load. Check your internet connection.</div>';return}materials.forEach(m=>{const card=document.createElement("div");card.className="barcode-card";const h=document.createElement("h4");h.textContent=m.name;const p=document.createElement("p");p.textContent="Location: "+m.location;const svg=document.createElementNS("http://www.w3.org/2000/svg","svg");const n=document.createElement("div");n.className="barcode-number";n.textContent=m.number;card.append(h,p,svg,n);c.appendChild(card);JsBarcode(svg,m.number,{format:"CODE128",lineColor:"#172b4d",width:2,height:55,displayValue:false,margin:5})})}
-function printBarcodes(){if(!materials.length){alert("No barcode labels available.");return}showPage("barcodes");setTimeout(()=>window.print(),200)}
-function getRequestedMaterial(){return getMaterial(document.getElementById("requestedMaterial").value)}
-function showVerifyResult(msg,type=""){const r=document.getElementById("verificationResult");r.className="result "+type;r.textContent=msg}
-function updateVerificationProgress(){const q=Number(document.getElementById("requestedQuantity").value)||0;document.getElementById("verifiedProgressText").textContent=verifiedQuantity+" / "+q;document.getElementById("verifiedProgressBar").style.width=(q>0?Math.min(verifiedQuantity/q*100,100):0)+"%"}
-function verifyScannedMaterial(code){const req=getRequestedMaterial(),qty=Number(document.getElementById("requestedQuantity").value);code=String(code||"").trim().toUpperCase();if(!req){showVerifyResult("Please select the requested material first.","warning");return}if(!Number.isInteger(qty)||qty<1){showVerifyResult("Please enter a valid requested quantity.","warning");return}const scanned=getMaterial(code);let status="MISMATCH";if(!scanned)showVerifyResult("MISMATCH: Barcode "+code+" is not registered.","error");else if(scanned.number!==req.number)showVerifyResult("MISMATCH: Requested "+req.number+" but scanned "+scanned.number+".","error");else if(verifiedQuantity>=qty)showVerifyResult("Requested quantity has already been fully verified.","warning");else{verifiedQuantity++;status="MATCH";const left=qty-verifiedQuantity;showVerifyResult(left===0?"MATCH: Material verified. Requested quantity is complete ("+verifiedQuantity+"/"+qty+").":"MATCH: "+scanned.name+" is correct. "+left+" more unit(s) to verify.","success")}verificationHistory.unshift({time:new Date().toLocaleString("id-ID"),scanned:code,requested:req.number,status});saveAll();renderVerificationHistory();updateVerificationProgress()}
-function resetVerification(){verifiedQuantity=0;document.getElementById("requestedMaterial").value="";document.getElementById("requestedQuantity").value="";showVerifyResult("Verification has been reset. Select a material to begin again.");updateVerificationProgress()}
-function renderVerificationHistory(){const tb=document.getElementById("verificationHistory");tb.innerHTML="";if(!verificationHistory.length){tb.innerHTML='<tr><td colspan="4" class="empty">No verification activity yet.</td></tr>';return}verificationHistory.forEach(e=>tb.innerHTML+=`<tr><td>${escapeHTML(e.time)}</td><td class="code">${escapeHTML(e.scanned)}</td><td>${escapeHTML(e.requested)}</td><td><span class="badge ${e.status==="MATCH"?"badge-green":"badge-red"}">${e.status}</span></td></tr>`)}
-function clearVerificationHistory(){if(!confirm("Clear all verification history?"))return;verificationHistory=[];saveAll();renderVerificationHistory()}
-let verifyScanner=null,stockScanner=null,inScanner=null,verifyRunning=false,stockRunning=false,inRunning=false,lastCodes={verify:"",stock:"",in:""},unlockTimers={};
-function cameraFormats(){return[Html5QrcodeSupportedFormats.CODE_128,Html5QrcodeSupportedFormats.CODE_39,Html5QrcodeSupportedFormats.EAN_13,Html5QrcodeSupportedFormats.EAN_8,Html5QrcodeSupportedFormats.UPC_A,Html5QrcodeSupportedFormats.UPC_E,Html5QrcodeSupportedFormats.QR_CODE]}
-async function startScanner(target,statusId,startId,stopId,onScan,mode){const status=document.getElementById(statusId),start=document.getElementById(startId),stop=document.getElementById(stopId);if(!window.isSecureContext){status.textContent="Camera requires HTTPS or localhost.";return null}if(typeof Html5Qrcode==="undefined"){status.textContent="Camera library could not load. Check your internet connection.";return null}start.disabled=true;status.textContent="Requesting camera permission...";try{const cams=await Html5Qrcode.getCameras();if(!cams.length)throw new Error("No camera found.");const back=cams.find(c=>/back|rear|environment/i.test(c.label)),id=back?back.id:cams[cams.length-1].id,scanner=new Html5Qrcode(target);await scanner.start(id,{fps:10,qrbox:{width:280,height:120},aspectRatio:1.777,formatsToSupport:cameraFormats()},decoded=>{const code=decoded.trim().toUpperCase();if(!code||code===lastCodes[mode])return;lastCodes[mode]=code;onScan(code);status.textContent="Scanned: "+code+". Move camera away before next scan.";clearTimeout(unlockTimers[mode]);unlockTimers[mode]=setTimeout(()=>lastCodes[mode]="",1600)},()=>{});stop.disabled=false;status.textContent="Camera is active. Point it at a barcode label.";return scanner}catch(e){start.disabled=false;stop.disabled=true;status.textContent="Could not start camera: "+(e.message||e);return null}}
-async function stopScanner(scanner,mode,statusId,startId,stopId){if(scanner){try{await scanner.stop();await scanner.clear()}catch(e){}}document.getElementById(startId).disabled=false;document.getElementById(stopId).disabled=true;document.getElementById(statusId).textContent="Camera is not running.";lastCodes[mode]="";clearTimeout(unlockTimers[mode]);if(mode==="verify"){verifyScanner=null;verifyRunning=false}else if(mode==="stock"){stockScanner=null;stockRunning=false}else{inScanner=null;inRunning=false}}
-async function startInCamera(){if(inRunning)return;inScanner=await startScanner("inCameraReader","inCameraStatus","startInCamera","stopInCamera",code=>{if(!selectStockInMaterial(code)){const r=document.getElementById("stockInResult");r.className="result error";r.textContent="Barcode "+code+" is not registered in the Material Database."}},"in");inRunning=!!inScanner}
-async function stopInCamera(){await stopScanner(inScanner,"in","inCameraStatus","startInCamera","stopInCamera")}
-async function startStockCamera(){if(stockRunning)return;stockScanner=await startScanner("stockCameraReader","stockCameraStatus","startStockCamera","stopStockCamera",code=>{const m=getMaterial(code),r=document.getElementById("stockOutResult");if(!m){r.className="result error";r.textContent="Barcode "+code+" is not registered in the Material Database.";return}selectStockOutMaterial(code);r.className="result success";r.textContent="Material selected: "+m.number+" - "+m.name},"stock");stockRunning=!!stockScanner}
-async function stopStockCamera(){await stopScanner(stockScanner,"stock","stockCameraStatus","startStockCamera","stopStockCamera")}
-async function startVerifyCamera(){if(!getRequestedMaterial()){showVerifyResult("Please select a requested material first.","warning");return}const q=Number(document.getElementById("requestedQuantity").value);if(!Number.isInteger(q)||q<1){showVerifyResult("Please enter a valid requested quantity.","warning");return}if(verifyRunning)return;verifyScanner=await startScanner("cameraReader","verifyCameraStatus","startVerifyCamera","stopVerifyCamera",verifyScannedMaterial,"verify");verifyRunning=!!verifyScanner}
-async function stopVerifyCamera(){await stopScanner(verifyScanner,"verify","verifyCameraStatus","startVerifyCamera","stopVerifyCamera")}
-window.addEventListener("beforeunload",()=>[verifyScanner,stockScanner,inScanner].forEach(s=>{if(s)s.stop().catch(()=>{})}));
-function renderDashboard(){const a=allBatches(),total=materials.reduce((s,m)=>s+totalStock(m),0),soon=a.filter(b=>b.quantity>0&&dayDifference(b.expiry)>0&&dayDifference(b.expiry)<=14).length,expired=a.filter(b=>b.quantity>0&&b.expiry&&dayDifference(b.expiry)<=0).length;document.getElementById("dashMaterials").textContent=materials.length;document.getElementById("dashStock").textContent=total.toLocaleString();document.getElementById("dashExpiring").textContent=soon;document.getElementById("dashExpired").textContent=expired;const tb=document.getElementById("dashboardTransactions");tb.innerHTML="";if(!transactions.length)tb.innerHTML='<tr><td colspan="5" class="empty">No recent transactions.</td></tr>';else transactions.slice(0,5).forEach(t=>tb.innerHTML+=`<tr><td>${escapeHTML(t.time)}</td><td>${escapeHTML(t.type)}</td><td class="code">${escapeHTML(t.number)}</td><td>${formatDate(t.expiry)}</td><td>${t.quantity}</td></tr>`)}
-function renderAll(){populateSelects();renderMaterials();renderStockInBatches();renderExpiry();renderExpiryAlerts();updateExpirySummary();renderTransactions();renderVerificationHistory();renderBarcodes();renderDashboard();updateVerificationProgress()}
-document.getElementById("requestedQuantity").addEventListener("input",updateVerificationProgress);
-document.getElementById("currentDate").textContent=new Date().toLocaleDateString("id-ID",{weekday:"long",day:"numeric",month:"long",year:"numeric"});
-saveAll();renderAll();checkExpiryNotifications();
+
+function writeStorage(key, data) {
+  localStorage.setItem(key, JSON.stringify(data));
+}
+
+function getRecords() {
+  return readStorage(RECORD_KEY);
+}
+
+function getLabels() {
+  return readStorage(LABEL_KEY);
+}
+
+
+// ==========================================
+// SAFE TEXT
+// ==========================================
+
+function escapeHTML(value) {
+
+  return String(value ?? "").replace(/[&<>"']/g, character => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#039;"
+  })[character]);
+
+}
+
+
+// ==========================================
+// NAVIGATION
+// ==========================================
+
+function showPage(pageId, button) {
+
+  document.querySelectorAll(".page").forEach(page => {
+    page.classList.remove("active");
+  });
+
+  document.getElementById(pageId).classList.add("active");
+
+  document.querySelectorAll(".nav-btn").forEach(btn => {
+    btn.classList.remove("active");
+  });
+
+  button.classList.add("active");
+
+  if (pageId === "dashboard") updateDashboard();
+  if (pageId === "history") renderHistory();
+  if (pageId === "barcode") renderLabels();
+
+}
+
+
+// ==========================================
+// CLOCK
+// ==========================================
+
+function updateClock() {
+
+  const now = new Date();
+
+  document.getElementById("currentClock").textContent =
+    now.toLocaleDateString("en-GB") + " | " +
+    now.toLocaleTimeString("en-GB");
+
+}
+
+setInterval(updateClock, 1000);
+updateClock();
+
+
+// ==========================================
+// BARCODE GENERATOR
+// ==========================================
+
+function generateLabel() {
+
+  const material = document.getElementById("barcodeMaterial")
+    .value.trim();
+
+  const description = document.getElementById("barcodeDescription")
+    .value.trim();
+
+  const location = document.getElementById("barcodeLocation")
+    .value.trim();
+
+  if (!material || !description || !location) {
+    alert("Please complete Material Number, Material Description, and Storage Location.");
+    return;
+  }
+
+  if (material.includes("|") ||
+      description.includes("|") ||
+      location.includes("|")) {
+    alert("The character | cannot be used in these fields.");
+    return;
+  }
+
+  if (!/^[A-Za-z0-9._/-]+$/.test(material)) {
+    alert("Material Number contains unsupported characters.");
+    return;
+  }
+
+  if (typeof JsBarcode === "undefined") {
+    alert("Barcode library could not be loaded. Check your internet connection.");
+    return;
+  }
+
+  const labels = getLabels();
+
+  const exists = labels.some(label =>
+    label.material.toLowerCase() === material.toLowerCase() &&
+    label.location.toLowerCase() === location.toLowerCase()
+  );
+
+  if (exists) {
+    alert("This Material Number and Storage Location already have a generated label.");
+    return;
+  }
+
+  const label = {
+
+    id: (window.crypto && crypto.randomUUID)
+      ? crypto.randomUUID()
+      : String(Date.now()),
+
+    material: material,
+    description: description,
+    location: location,
+
+    // CODE128 payload:
+    // Material Number | Description | Location
+    payload: material + "|" + description + "|" + location
+
+  };
+
+  labels.unshift(label);
+
+  writeStorage(LABEL_KEY, labels);
+
+  renderLabels();
+
+  clearBarcodeForm();
+
+  alert("Barcode label generated successfully!");
+
+}
+
+
+function clearBarcodeForm() {
+
+  document.getElementById("barcodeMaterial").value = "";
+  document.getElementById("barcodeDescription").value = "";
+  document.getElementById("barcodeLocation").value = "";
+
+}
+
+
+// ==========================================
+// RENDER BARCODE LABELS
+// ==========================================
+
+function renderLabels() {
+
+  const labels = getLabels();
+
+  const grid = document.getElementById("labelsGrid");
+
+  document.getElementById("labelCount").textContent =
+    labels.length + (labels.length === 1
+      ? " barcode label"
+      : " barcode labels");
+
+  grid.innerHTML = "";
+
+  if (!labels.length) {
+
+    grid.innerHTML = `
+      <div class="empty-labels" style="grid-column:1/-1;">
+        <div class="label-empty-icon">▤</div>
+        <strong>No barcode labels generated yet.</strong>
+        <p style="margin-top:8px;">
+          Enter material information above to create your first barcode label.
+        </p>
+      </div>
+    `;
+
+    return;
+  }
+
+  labels.forEach(label => {
+
+    const card = document.createElement("div");
+
+    card.className = "barcode-label";
+
+    card.innerHTML = `
+
+      <h3>${escapeHTML(label.description)}</h3>
+
+      <p class="location">
+        Location: ${escapeHTML(label.location)}
+      </p>
+
+      <svg></svg>
+
+      <div class="material-code">
+        ${escapeHTML(label.material)}
+      </div>
+
+      <div class="label-actions no-print">
+
+        <button
+          class="btn btn-danger"
+          data-remove="${escapeHTML(label.id)}"
+        >
+          Remove Label
+        </button>
+
+      </div>
+
+    `;
+
+    grid.appendChild(card);
+
+    const svg = card.querySelector("svg");
+
+    try {
+
+      JsBarcode(svg, label.payload, {
+
+        format: "CODE128",
+        lineColor: "#12294a",
+        width: 2,
+        height: 65,
+        displayValue: false,
+        margin: 5
+
+      });
+
+    } catch (error) {
+
+      svg.outerHTML = '<p class="hint">Unable to generate barcode.</p>';
+
+    }
+
+  });
+
+  grid.querySelectorAll("[data-remove]").forEach(button => {
+
+    button.addEventListener("click", () => {
+      removeLabel(button.dataset.remove);
+    });
+
+  });
+
+}
+
+
+// ==========================================
+// REMOVE LABEL
+// ==========================================
+
+function removeLabel(id) {
+
+  if (!confirm("Remove this barcode label?")) return;
+
+  const labels = getLabels().filter(label => label.id !== id);
+
+  writeStorage(LABEL_KEY, labels);
+
+  renderLabels();
+
+}
+
+
+// ==========================================
+// PRINT ALL BARCODE LABELS
+// ==========================================
+
+function printAllLabels() {
+
+  const labels = getLabels();
+
+  if (!labels.length) {
+    alert("There are no barcode labels to print.");
+    return;
+  }
+
+  if (typeof JsBarcode === "undefined") {
+    alert("Barcode library is not available.");
+    return;
+  }
+
+  document.body.classList.add("printing-labels");
+
+  window.print();
+
+  setTimeout(() => {
+    document.body.classList.remove("printing-labels");
+  }, 1000);
+
+}
+
+
+// ==========================================
+// BARCODE SCANNER / MATERIAL DATA
+// ==========================================
+
+function fillMaterial(rawCode) {
+
+  const code = String(rawCode || "").trim();
+
+  if (!code) return;
+
+  let material = code;
+  let description = "";
+  let location = "";
+
+  // Read generated barcode information.
+  // Payload: Material|Description|Location
+
+  const parts = code.split("|");
+
+  if (parts.length === 3) {
+
+    material = parts[0];
+    description = parts[1];
+    location = parts[2];
+
+  } else {
+
+    // For a barcode containing only Material Number,
+    // find the matching label on this browser.
+
+    const matchingLabel = getLabels().find(label =>
+      label.material.toLowerCase() === material.toLowerCase()
+    );
+
+    if (matchingLabel) {
+
+      description = matchingLabel.description;
+      location = matchingLabel.location;
+
+    }
+
+  }
+
+  document.getElementById("materialNumber").value = code;
+
+  document.getElementById("materialDisplay").value = material;
+
+  document.getElementById("descriptionDisplay").value =
+    description;
+
+  document.getElementById("locationDisplay").value =
+    location;
+
+  document.getElementById("duplicateAlert").classList.add("hidden");
+
+}
+
+
+// ==========================================
+// USB BARCODE SCANNER
+// ==========================================
+
+document.getElementById("materialNumber")
+  .addEventListener("keydown", function(event) {
+
+    if (event.key === "Enter") {
+
+      event.preventDefault();
+
+      fillMaterial(this.value);
+
+    }
+
+  });
+
+
+// ==========================================
+// CAMERA BARCODE SCANNER
+// ==========================================
+
+let html5Scanner = null;
+
+async function startScanner() {
+
+  if (typeof Html5Qrcode === "undefined") {
+    alert("Scanner library could not be loaded. Check your internet connection.");
+    return;
+  }
+
+  document.getElementById("readerContainer")
+    .classList.remove("hidden");
+
+  try {
+
+    html5Scanner = new Html5Qrcode("reader");
+
+    await html5Scanner.start(
+
+      { facingMode: "environment" },
+
+      {
+        fps: 10,
+        qrbox: { width: 280, height: 130 }
+      },
+
+      (decodedText) => {
+
+        fillMaterial(decodedText);
+
+        stopScanner();
+
+      },
+
+      () => {}
+
+    );
+
+  } catch (error) {
+
+    alert("Camera cannot be opened. Please allow camera access and use HTTPS.");
+
+    document.getElementById("readerContainer")
+      .classList.add("hidden");
+
+    html5Scanner = null;
+
+  }
+
+}
+
+
+async function stopScanner() {
+
+  if (html5Scanner) {
+
+    try {
+
+      if (html5Scanner.isScanning) {
+        await html5Scanner.stop();
+      }
+
+      html5Scanner.clear();
+
+    } catch (error) {
+      console.log("Scanner closed.");
+    }
+
+    html5Scanner = null;
+
+  }
+
+  document.getElementById("readerContainer")
+    .classList.add("hidden");
+
+}
+
+
+// ==========================================
+// SAVE ISSUING TRANSACTION
+// ==========================================
+
+function saveIssuing() {
+
+  const material = document.getElementById("materialDisplay")
+    .value.trim();
+
+  const description = document.getElementById("descriptionDisplay")
+    .value.trim();
+
+  const location = document.getElementById("locationDisplay")
+    .value.trim();
+
+  const reservation = document.getElementById("reservationNumber")
+    .value.trim();
+
+  const issuedBy = document.getElementById("issuedBy")
+    .value.trim();
+
+  const receivedBy = document.getElementById("receivedBy")
+    .value.trim();
+
+  const alertBox = document.getElementById("duplicateAlert");
+
+  alertBox.classList.add("hidden");
+
+  if (!material || !reservation || !issuedBy || !receivedBy) {
+
+    alert("Please scan a material barcode and complete all required fields.");
+
+    return;
+
+  }
+
+  const records = getRecords();
+
+  // Prevent duplicate issuing for the same
+  // Reservation Number + Material Number.
+
+  const duplicate = records.find(record =>
+
+    record.reservation.toLowerCase() === reservation.toLowerCase() &&
+
+    record.material.toLowerCase() === material.toLowerCase() &&
+
+    record.status === "Issued"
+
+  );
+
+  if (duplicate) {
+
+    alertBox.innerHTML = `
+
+      <strong>Duplicate Issuing Detected!</strong><br>
+
+      This material under the same Reservation Number
+      has already been issued.
+
+      <br><br>
+
+      Issued By: ${escapeHTML(duplicate.issuedBy)}<br>
+
+      Date: ${escapeHTML(duplicate.date)}<br>
+
+      Time: ${escapeHTML(duplicate.time)}
+
+    `;
+
+    alertBox.classList.remove("hidden");
+
+    alert("This Reservation Number and Material Number combination has already been issued.");
+
+    return;
+
+  }
+
+  const now = new Date();
+
+  const record = {
+
+    id: (window.crypto && crypto.randomUUID)
+      ? crypto.randomUUID()
+      : String(Date.now()),
+
+    material: material,
+    description: description,
+    location: location,
+
+    reservation: reservation,
+
+    issuedBy: issuedBy,
+    receivedBy: receivedBy,
+
+    date: now.toLocaleDateString("en-GB"),
+    time: now.toLocaleTimeString("en-GB"),
+
+    timestamp: now.getTime(),
+
+    status: "Issued"
+
+  };
+
+  records.unshift(record);
+
+  writeStorage(RECORD_KEY, records);
+
+  alert("Issuing record saved successfully!");
+
+  clearIssuing();
+
+  updateDashboard();
+
+  renderHistory();
+
+}
+
+
+// ==========================================
+// RESET ISSUING FORM
+// ==========================================
+
+function clearIssuing() {
+
+  document.getElementById("materialNumber").value = "";
+  document.getElementById("materialDisplay").value = "";
+  document.getElementById("descriptionDisplay").value = "";
+  document.getElementById("locationDisplay").value = "";
+
+  document.getElementById("reservationNumber").value = "";
+  document.getElementById("issuedBy").value = "";
+  document.getElementById("receivedBy").value = "";
+
+  document.getElementById("duplicateAlert")
+    .classList.add("hidden");
+
+}
+
+
+// ==========================================
+// DASHBOARD
+// ==========================================
+
+function updateDashboard() {
+
+  const records = getRecords();
+
+  const issued = records.filter(r => r.status === "Issued");
+
+  const today = new Date().toLocaleDateString("en-GB");
+
+  const todayRecords = issued.filter(r => r.date === today);
+
+  const uniqueReservations = new Set(
+    issued.map(r => r.reservation.toLowerCase())
+  );
+
+  document.getElementById("totalIssuing").textContent =
+    issued.length;
+
+  document.getElementById("totalReservation").textContent =
+    uniqueReservations.size;
+
+  document.getElementById("todayIssuing").textContent =
+    todayRecords.length;
+
+  const recent = issued.slice(0, 7);
+
+  const tbody = document.getElementById("recentTable");
+
+  if (!recent.length) {
+
+    tbody.innerHTML = `
+      <tr>
+        <td colspan="7" class="empty">
+          No issuing records available.
+        </td>
+      </tr>
+    `;
+
+    return;
+
+  }
+
+  tbody.innerHTML = recent.map(r => `
+
+    <tr>
+
+      <td>${escapeHTML(r.reservation)}</td>
+
+      <td>${escapeHTML(r.material)}</td>
+
+      <td>${escapeHTML(r.description || "-")}</td>
+
+      <td>${escapeHTML(r.issuedBy)}</td>
+
+      <td>${escapeHTML(r.receivedBy)}</td>
+
+      <td>${escapeHTML(r.date)} ${escapeHTML(r.time)}</td>
+
+      <td>
+        <span class="status status-issued">Issued</span>
+      </td>
+
+    </tr>
+
+  `).join("");
+
+}
+
+
+// ==========================================
+// ISSUING HISTORY
+// ==========================================
+
+function renderHistory() {
+
+  const records = getRecords();
+
+  const search = document.getElementById("searchHistory")
+    .value.toLowerCase().trim();
+
+  const filtered = records.filter(r => {
+
+    return (
+
+      r.reservation.toLowerCase().includes(search) ||
+
+      r.material.toLowerCase().includes(search) ||
+
+      (r.description || "").toLowerCase().includes(search) ||
+
+      r.issuedBy.toLowerCase().includes(search) ||
+
+      r.receivedBy.toLowerCase().includes(search)
+
+    );
+
+  });
+
+  const tbody = document.getElementById("historyTable");
+
+  if (!filtered.length) {
+
+    tbody.innerHTML = `
+      <tr>
+        <td colspan="9" class="empty">
+          No matching issuing records found.
+        </td>
+      </tr>
+    `;
+
+    return;
+
+  }
+
+  tbody.innerHTML = filtered.map((r, index) => `
+
+    <tr>
+
+      <td>${index + 1}</td>
+
+      <td>${escapeHTML(r.reservation)}</td>
+
+      <td>${escapeHTML(r.material)}</td>
+
+      <td>${escapeHTML(r.description || "-")}</td>
+
+      <td>${escapeHTML(r.issuedBy)}</td>
+
+      <td>${escapeHTML(r.receivedBy)}</td>
+
+      <td>${escapeHTML(r.date)}</td>
+
+      <td>${escapeHTML(r.time)}</td>
+
+      <td>
+        <span class="status status-issued">Issued</span>
+      </td>
+
+    </tr>
+
+  `).join("");
+
+}
+
+
+// ==========================================
+// EXPORT CSV
+// ==========================================
+
+function exportCSV() {
+
+  const records = getRecords();
+
+  if (!records.length) {
+
+    alert("No records available to export.");
+
+    return;
+
+  }
+
+  const headers = [
+
+    "Reservation Number",
+    "Material Number",
+    "Material Description",
+    "Storage Location",
+    "Issued By",
+    "Received By",
+    "Date",
+    "Time",
+    "Status"
+
+  ];
+
+  const rows = records.map(r => [
+
+    r.reservation,
+    r.material,
+    r.description || "",
+    r.location || "",
+    r.issuedBy,
+    r.receivedBy,
+    r.date,
+    r.time,
+    r.status
+
+  ]);
+
+  function csvCell(value) {
+
+    return '"' + String(value ?? "").replace(/"/g, '""') + '"';
+
+  }
+
+  const csv = [headers, ...rows]
+
+    .map(row => row.map(csvCell).join(","))
+
+    .join("\r\n");
+
+  const blob = new Blob(["\uFEFF" + csv], {
+
+    type: "text/csv;charset=utf-8;"
+
+  });
+
+  const url = URL.createObjectURL(blob);
+
+  const link = document.createElement("a");
+
+  link.href = url;
+
+  link.download = "SCM_Issuing_History.csv";
+
+  link.click();
+
+  URL.revokeObjectURL(url);
+
+}
+
+
+// ==========================================
+// INITIALIZE
+// ==========================================
+
+renderLabels();
+
+updateDashboard();
+
+renderHistory();
+
 </script>
+
 </body>
 </html>
