@@ -668,7 +668,7 @@ tbody tr:hover {
         <button class="btn btn-secondary" onclick="startScanner()">📷 Scan</button>
       </div>
 
-      <p class="hint">Use a camera or USB barcode scanner. A USB scanner should send Enter after scanning.</p>
+      <p class="hint">Open this page on your phone using HTTPS, allow camera access, then scan a CODE128 barcode. You can also use a USB scanner on a laptop.</p>
     </div>
 
     <div id="readerContainer" class="scanner-box hidden">
@@ -772,11 +772,7 @@ tbody tr:hover {
 
 <script>
 
-// ==================================
-// GOOGLE SHEETS CONNECTION
-// ==================================
-// Paste your deployed Apps Script Web App URL here (must end in /exec).
-const SCRIPT_URL = "PASTE_YOUR_APPS_SCRIPT_WEB_APP_URL_HERE";
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzl_Jzw8Zs5Q5bWIEqeDJIqx7RrY4jgQZ6LM1its3ZH5ZsooRs0Oa_QT-hUVKIkOprQ3A/exec";
 let cachedRecords = [];
 
 function api(action, data = {}) {
@@ -836,18 +832,77 @@ function fillMaterial(code){
   document.getElementById('duplicateAlert').classList.add('hidden');
 }
 
-let html5Scanner=null;
-async function startScanner(){
-  if(typeof Html5Qrcode==='undefined'){alert('Scanner library could not be loaded. Check your internet connection.');return;}
-  if(!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia){alert('Camera needs HTTPS and browser camera permission.');return;}
-  document.getElementById('readerContainer').classList.remove('hidden');
-  try{
-    html5Scanner=new Html5Qrcode('reader');
-    await html5Scanner.start({facingMode:'environment'},{fps:10,qrbox:{width:250,height:130}},decodedText=>{fillMaterial(decodedText);stopScanner();},()=>{});
-  }catch(error){alert('Camera cannot be opened. Allow camera permission and use HTTPS.');document.getElementById('readerContainer').classList.add('hidden');html5Scanner=null;}
+let html5Scanner = null;
+let scannerStarting = false;
+
+async function startScanner() {
+  if (scannerStarting || (html5Scanner && html5Scanner.isScanning)) return;
+
+  if (typeof Html5Qrcode === 'undefined') {
+    alert('Scanner library belum termuat. Periksa koneksi internet lalu muat ulang website.');
+    return;
+  }
+
+  if (!window.isSecureContext || !navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+    alert('Kamera membutuhkan HTTPS. Buka website melalui alamat GitHub Pages yang diawali https://');
+    return;
+  }
+
+  const container = document.getElementById('readerContainer');
+  container.classList.remove('hidden');
+  scannerStarting = true;
+
+  try {
+    html5Scanner = new Html5Qrcode('reader', {
+      formatsToSupport: [
+        Html5QrcodeSupportedFormats.CODE_128,
+        Html5QrcodeSupportedFormats.QR_CODE,
+        Html5QrcodeSupportedFormats.EAN_13,
+        Html5QrcodeSupportedFormats.EAN_8
+      ],
+      verbose: false
+    });
+
+    await html5Scanner.start(
+      { facingMode: 'environment' },
+      {
+        fps: 12,
+        qrbox: (viewWidth, viewHeight) => {
+          const width = Math.min(300, Math.floor(viewWidth * 0.9));
+          const height = Math.min(150, Math.floor(viewHeight * 0.65));
+          return { width, height };
+        },
+        aspectRatio: 1.777
+      },
+      decodedText => {
+        fillMaterial(decodedText);
+        stopScanner();
+      },
+      () => {}
+    );
+  } catch (error) {
+    console.error('Scanner error:', error);
+    alert('Kamera tidak dapat dibuka. Izinkan akses kamera untuk browser, gunakan HTTPS, dan tutup aplikasi lain yang sedang memakai kamera.');
+    if (html5Scanner) {
+      try { await html5Scanner.clear(); } catch (e) {}
+    }
+    html5Scanner = null;
+    container.classList.add('hidden');
+  } finally {
+    scannerStarting = false;
+  }
 }
-async function stopScanner(){
-  if(html5Scanner){try{if(html5Scanner.isScanning) await html5Scanner.stop();html5Scanner.clear();}catch(e){}html5Scanner=null;}
+
+async function stopScanner() {
+  if (html5Scanner) {
+    try {
+      if (html5Scanner.isScanning) await html5Scanner.stop();
+      await html5Scanner.clear();
+    } catch (error) {
+      console.warn('Scanner close:', error);
+    }
+    html5Scanner = null;
+  }
   document.getElementById('readerContainer').classList.add('hidden');
 }
 
