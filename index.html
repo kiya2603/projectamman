@@ -619,7 +619,17 @@ tbody tr:hover {
     <div class="field">
       <label>Material Number</label>
       <input id="barcodeMaterial" placeholder="Enter SAP Material Number">
-      <p class="hint">Enter the Material Number to create its barcode.</p>
+    </div>
+
+    <div class="field">
+      <label>Material Description</label>
+      <input id="barcodeDescription" placeholder="Enter material name / description">
+    </div>
+
+    <div class="field">
+      <label>Storage Location</label>
+      <input id="barcodeStorage" placeholder="Enter storage location">
+      <p class="hint">Barcode will contain Material Number, Material Description, and Storage Location.</p>
     </div>
 
     <div class="button-row">
@@ -632,6 +642,8 @@ tbody tr:hover {
         <h3 style="font-size:14px;color:#12294a;margin-bottom:12px;">SCM MATERIAL IDENTIFICATION</h3>
         <svg id="barcodeSvg"></svg>
         <p id="barcodeLabel" style="font-weight:bold;color:#12294a;"></p>
+        <p id="barcodeDescriptionLabel" style="font-size:12px;color:#43546a;"></p>
+        <p id="barcodeStorageLabel" style="font-size:12px;color:#43546a;"></p>
       </div>
 
       <div class="button-row" style="justify-content:center;">
@@ -680,6 +692,16 @@ tbody tr:hover {
     <div class="field">
       <label>Material Number</label>
       <input id="materialDisplay" placeholder="Automatically filled after scanning" readonly>
+    </div>
+
+    <div class="field">
+      <label>Material Description</label>
+      <input id="materialDescriptionDisplay" placeholder="Automatically filled after scanning" readonly>
+    </div>
+
+    <div class="field">
+      <label>Storage Location</label>
+      <input id="storageLocationDisplay" placeholder="Automatically filled after scanning" readonly>
     </div>
 
     <div class="field">
@@ -810,15 +832,26 @@ setInterval(updateClock, 1000); updateClock();
 
 function generateBarcode() {
   const material = document.getElementById('barcodeMaterial').value.trim();
-  if (!material) { alert('Please enter Material Number.'); return; }
-  if (!/^[A-Za-z0-9._/-]+$/.test(material)) { alert('Material Number contains unsupported characters.'); return; }
+  const description = document.getElementById('barcodeDescription').value.trim();
+  const storage = document.getElementById('barcodeStorage').value.trim();
+  if (!material || !description || !storage) {
+    alert('Please complete Material Number, Material Description, and Storage Location.');
+    return;
+  }
+  // Delimited payload lets the phone scanner recover all three fields.
+  const payload = [material, description, storage].join('|');
   try {
-    JsBarcode('#barcodeSvg', material, {format:'CODE128', lineColor:'#12294a', width:2, height:75, displayValue:true, fontSize:14, margin:10});
+    JsBarcode('#barcodeSvg', payload, {format:'CODE128', lineColor:'#12294a', width:2, height:75, displayValue:false, margin:10});
     document.getElementById('barcodeLabel').textContent = 'Material Number: ' + material;
+    document.getElementById('barcodeDescriptionLabel').textContent = 'Material Description: ' + description;
+    document.getElementById('barcodeStorageLabel').textContent = 'Storage Location: ' + storage;
     document.getElementById('barcodeResult').classList.remove('hidden');
-  } catch(e) { alert('Unable to generate barcode.'); }
+  } catch(e) { alert('Unable to generate barcode. Check the entered information.'); }
 }
-function clearBarcode(){ document.getElementById('barcodeMaterial').value=''; document.getElementById('barcodeResult').classList.add('hidden'); }
+function clearBarcode(){
+  ['barcodeMaterial','barcodeDescription','barcodeStorage'].forEach(id => document.getElementById(id).value='');
+  document.getElementById('barcodeResult').classList.add('hidden');
+}
 function printBarcode(){ document.body.classList.add('printing'); window.print(); setTimeout(()=>document.body.classList.remove('printing'),1000); }
 
 const materialInput = document.getElementById('materialNumber');
@@ -827,8 +860,17 @@ materialInput.addEventListener('keydown', function(event){
 });
 function fillMaterial(code){
   code=String(code).trim(); if(!code) return;
+  let material = code, description = '', storage = '';
+  const parts = code.split('|');
+  if (parts.length >= 3) {
+    material = parts[0].trim();
+    description = parts[1].trim();
+    storage = parts.slice(2).join('|').trim();
+  }
   document.getElementById('materialNumber').value=code;
-  document.getElementById('materialDisplay').value=code;
+  document.getElementById('materialDisplay').value=material;
+  document.getElementById('materialDescriptionDisplay').value=description;
+  document.getElementById('storageLocationDisplay').value=storage;
   document.getElementById('duplicateAlert').classList.add('hidden');
 }
 
@@ -924,6 +966,8 @@ async function loadRecords(){
 
 async function saveIssuing(){
   const material=document.getElementById('materialDisplay').value.trim();
+  const description=document.getElementById('materialDescriptionDisplay').value.trim();
+  const storage=document.getElementById('storageLocationDisplay').value.trim();
   const reservation=document.getElementById('reservationNumber').value.trim();
   const issuedBy=document.getElementById('issuedBy').value.trim();
   const receivedBy=document.getElementById('receivedBy').value.trim();
@@ -932,7 +976,7 @@ async function saveIssuing(){
   const button=document.querySelector("button[onclick='saveIssuing()']");
   if(button){button.disabled=true;button.textContent='Saving...';}
   try{
-    const result=await api('save',{material,reservation,issuedBy,receivedBy});
+    const result=await api('save',{material,description,storage,reservation,issuedBy,receivedBy});
     alert(result.message||'Issuing record saved successfully!');
     clearIssuing(); await loadRecords();
   }catch(error){
@@ -943,7 +987,7 @@ async function saveIssuing(){
   }finally{if(button){button.disabled=false;button.textContent='Save Issuing Record';}}
 }
 function clearIssuing(){
-  ['materialNumber','materialDisplay','reservationNumber','issuedBy','receivedBy'].forEach(id=>document.getElementById(id).value='');
+  ['materialNumber','materialDisplay','materialDescriptionDisplay','storageLocationDisplay','reservationNumber','issuedBy','receivedBy'].forEach(id=>document.getElementById(id).value='');
   document.getElementById('duplicateAlert').classList.add('hidden');
 }
 function updateDashboard(){
